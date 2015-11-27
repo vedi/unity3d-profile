@@ -725,7 +725,7 @@ extern "C"{
                                      toRecepient:@"onGetScoresFailed"
                                       withFilter:provider];
     }
-    else if ([notification.name isEqualToString:EVENT_UP_REPORT_SCORE_STARTED]) {
+    else if ([notification.name isEqualToString:EVENT_UP_SUBMIT_SCORE_STARTED]) {
         NSDictionary* userInfo = [notification userInfo];
         NSNumber* provider = [userInfo valueForKey:DICT_ELEMENT_PROVIDER];
         
@@ -735,10 +735,10 @@ extern "C"{
                                                             }];
         
         [UnityProfileEventDispatcher sendMessage:jsonStr
-                                     toRecepient:@"onReportScoreStarted"
+                                     toRecepient:@"onSubmitScoreStarted"
                                       withFilter:provider];
     }
-    else if ([notification.name isEqualToString:EVENT_UP_REPORT_SCORE_FINISHED]) {
+    else if ([notification.name isEqualToString:EVENT_UP_SUBMIT_SCORE_FINISHED]) {
         NSDictionary* userInfo = [notification userInfo];
         NSNumber* provider = [userInfo valueForKey:DICT_ELEMENT_PROVIDER];
         
@@ -749,10 +749,10 @@ extern "C"{
                                                             }];
         
         [UnityProfileEventDispatcher sendMessage:jsonStr
-                                     toRecepient:@"onReportScoreFinished"
+                                     toRecepient:@"onSubmitScoreFinished"
                                       withFilter:provider];
     }
-    else if ([notification.name isEqualToString:EVENT_UP_REPORT_SCORE_FAILED]) {
+    else if ([notification.name isEqualToString:EVENT_UP_SUBMIT_SCORE_FAILED]) {
         NSDictionary* userInfo = [notification userInfo];
         NSNumber* provider = [userInfo valueForKey:DICT_ELEMENT_PROVIDER];
         
@@ -764,7 +764,7 @@ extern "C"{
                                                             }];
         
         [UnityProfileEventDispatcher sendMessage:jsonStr
-                                     toRecepient:@"onReportScoreFailed"
+                                     toRecepient:@"onSubmitScoreFailed"
                                       withFilter:provider];
     }
 }

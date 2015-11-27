@@ -214,7 +214,7 @@ namespace Soomla.Profile {
 			Soomla.SoomlaUtils.LogDebug(TAG, "Game services isn't supported in Android yet.");
 		}
 
-		protected override void _reportScore(Soomla.Profile.Provider provider, Soomla.Profile.Leaderboard where, int score, string payload) {
+		protected override void _submitScore(Soomla.Profile.Provider provider, Soomla.Profile.Leaderboard to, int score, string payload) {
 			Soomla.SoomlaUtils.LogDebug(TAG, "Game services isn't supported in Android yet.");
 		}
 

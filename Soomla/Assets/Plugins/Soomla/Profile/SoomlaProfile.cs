@@ -1010,10 +1010,10 @@ namespace Soomla.Profile
 		/// NOTE: This operation requires a successful login.
 		/// </summary>
 		/// <param name="provider">The <c>Provider</c> to fetch contacts from.</param>
-		/// <param name="where">The <c>Leaderboard</c> score will be written to.</param>
+		/// <param name="to">The <c>Leaderboard</c> score will be written to.</param>
 		/// <param name="score">Value of score will be written to leaderboard.</param>
 		/// <param name="payload">A string to receive when the function returns.</param>
-		public static void ReportScore(Provider provider, Leaderboard where, int score, string payload = "", Reward reward = null) {
+		public static void SubmitScore(Provider provider, Leaderboard to, int score, string payload = "", Reward reward = null) {
 			GameServicesProvider targetProvider = (GameServicesProvider)GetProviderImplementation(provider);
 			string userPayload = (payload == null) ? "" : payload;
 			if (targetProvider == null)
@@ -1023,18 +1023,18 @@ namespace Soomla.Profile
 			{
 				//fallback to native
 				string rewardId = reward != null ? reward.ID: "";
-				instance._reportScore(provider, where, score, ProfilePayload.ToJSONObj(userPayload, rewardId).ToString());
+				instance._submitScore(provider, to, score, ProfilePayload.ToJSONObj(userPayload, rewardId).ToString());
 			}
 			else
 			{
-				ProfileEvents.OnReportScoreStarted(new ReportScoreStartedEvent(provider, where, payload));
-				targetProvider.ReportScore(where, score, (Score newScore) => {
+				ProfileEvents.OnSubmitScoreStarted(new SubmitScoreStartedEvent(provider, to, payload));
+				targetProvider.SubmitScore(to, score, (Score newScore) => {
 					if (reward != null) {
 						reward.Give();
 					}
-					ProfileEvents.OnReportScoreFinished(new ReportScoreFinishedEvent(provider, where, newScore, payload));
+					ProfileEvents.OnSubmitScoreFinished(new SubmitScoreFinishedEvent(provider, to, newScore, payload));
 				}, (string message) => {
-					ProfileEvents.OnReportScoreFailed(new ReportScoreFailedEvent(provider, where, message, payload));
+					ProfileEvents.OnSubmitScoreFailed(new SubmitScoreFailedEvent(provider, to, message, payload));
 				});
 			}
 		}
@@ -1104,7 +1104,7 @@ namespace Soomla.Profile
 
 		protected virtual void _getScores(Provider provider, Leaderboard from, bool fromStart, string payload) { }
 
-		protected virtual void _reportScore(Provider provider, Leaderboard where, int score, string payload) { }
+		protected virtual void _submitScore(Provider provider, Leaderboard to, int score, string payload) { }
 
 
 		protected virtual UserProfile _getStoredUserProfile(Provider provider) {

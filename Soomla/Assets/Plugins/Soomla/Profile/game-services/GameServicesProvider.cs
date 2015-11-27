@@ -38,7 +38,7 @@ namespace Soomla.Profile
 
 		public abstract void GetScores(Leaderboard owner, bool fromStart, SocialPageDataSuccess<Score> success, FailureHandler fail);
 
-		public abstract void ReportScore(Leaderboard owner, int value, SingleObjectSuccess<Score> success, FailureHandler fail);
+		public abstract void SubmitScore(Leaderboard to, int value, SingleObjectSuccess<Score> success, FailureHandler fail);
 
 
 		/// <summary>

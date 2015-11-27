@@ -232,14 +232,14 @@ extern "C"{
                                                  andReward:nil];
     }
 
-    void soomlaProfile_ReportScore(const char * sProvider, const char * where, int score, const char * payload) {
+    void soomlaProfile_SubmitScore(const char * sProvider, const char *to, int score, const char * payload) {
         NSString* providerIdS = [NSString stringWithUTF8String:sProvider];
         NSString* payloadS = [NSString stringWithUTF8String:payload];
-        Leaderboard *leaderboardS = [[Leaderboard alloc] initWithDictionary:[SoomlaUtils jsonStringToDict:[NSString stringWithUTF8String:where]]];
+        Leaderboard *leaderboardS = [[Leaderboard alloc] initWithDictionary:[SoomlaUtils jsonStringToDict:[NSString stringWithUTF8String:to]]];
 
-        [[SoomlaProfile getInstance] reportScoreWithProvider:[UserProfileUtils providerStringToEnum:providerIdS]
+        [[SoomlaProfile getInstance] submitScoreWithProvider:[UserProfileUtils providerStringToEnum:providerIdS]
                                                        score:@(score)
-                                              forLeaderboard:leaderboardS
+                                               toLeaderboard:leaderboardS
                                                      payload:payloadS
                                                    andReward:nil];
     }

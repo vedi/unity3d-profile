@@ -62,7 +62,7 @@ namespace Soomla.Profile
 
 		public override void GetScores(Leaderboard owner, bool fromStart, SocialPageDataSuccess<Score> success, FailureHandler fail) {}
 
-		public override void ReportScore(Leaderboard owner, int value, SingleObjectSuccess<Score> success, FailureHandler fail) {}
+		public override void SubmitScore(Leaderboard to, int value, SingleObjectSuccess<Score> success, FailureHandler fail) {}
 
 		public override bool IsNativelyImplemented() {
 				return true;
@@ -70,5 +70,3 @@ namespace Soomla.Profile
 	}
 #endif
 }
-
-
