@@ -207,15 +207,27 @@ namespace Soomla.Profile {
 		}
 
 		protected override void _getLeaderboards(Soomla.Profile.Provider provider, string payload) {
-			Soomla.SoomlaUtils.LogDebug(TAG, "Game services isn't supported in Android yet.");
+			AndroidJNI.PushLocalFrame(100);
+			using(AndroidJavaClass jniSoomlaProfile = new AndroidJavaClass("com.soomla.profile.unity.UnitySoomlaProfile")) {
+				ProfileJNIHandler.CallStaticVoid(jniSoomlaProfile, "getLeaderboards", provider.ToString(), payload);
+			}
+			AndroidJNI.PopLocalFrame(IntPtr.Zero);
 		}
 
 		protected override void _getScores(Soomla.Profile.Provider provider, Soomla.Profile.Leaderboard from, bool fromStart, string payload) {
-			Soomla.SoomlaUtils.LogDebug(TAG, "Game services isn't supported in Android yet.");
+			AndroidJNI.PushLocalFrame(100);
+			using(AndroidJavaClass jniSoomlaProfile = new AndroidJavaClass("com.soomla.profile.unity.UnitySoomlaProfile")) {
+				ProfileJNIHandler.CallStaticVoid(jniSoomlaProfile, "getScores", provider.ToString(), from.toJSONObject().ToString(), fromStart, payload);
+			}
+			AndroidJNI.PopLocalFrame(IntPtr.Zero);
 		}
 
 		protected override void _submitScore(Soomla.Profile.Provider provider, Soomla.Profile.Leaderboard to, int score, string payload) {
-			Soomla.SoomlaUtils.LogDebug(TAG, "Game services isn't supported in Android yet.");
+			AndroidJNI.PushLocalFrame(100);
+			using(AndroidJavaClass jniSoomlaProfile = new AndroidJavaClass("com.soomla.profile.unity.UnitySoomlaProfile")) {
+				ProfileJNIHandler.CallStaticVoid(jniSoomlaProfile, "submitScore", provider.ToString(), to.toJSONObject().ToString(), score, payload);
+			}
+			AndroidJNI.PopLocalFrame(IntPtr.Zero);
 		}
 
 #endif

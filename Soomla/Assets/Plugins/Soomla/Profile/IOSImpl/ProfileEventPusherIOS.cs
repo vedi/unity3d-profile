@@ -226,17 +226,17 @@ namespace Soomla.Profile {
 			soomlaProfile_PushEventGetScoresFailed(ev.Provider.ToString(), ev.From.toJSONObject().ToString(), ev.ErrorDescription, ev.FromStart, ev.Payload);
 		}
 
-		protected override void _pushEventReportScoreStarted(SubmitScoreStartedEvent ev) {
+		protected override void _pushEventSubmitScoreStarted(SubmitScoreStartedEvent ev) {
 			if (SoomlaProfile.IsProviderNativelyImplemented(ev.Provider)) return;
 			soomlaProfile_PushEventReportScoreStarted(ev.Provider.ToString(), ev.Destination.toJSONObject().ToString(), ev.Payload);
 		}
 
-		protected override void _pushEventReportScoreFinished(SubmitScoreFinishedEvent ev) {
+		protected override void _pushEventSubmitScoreFinished(SubmitScoreFinishedEvent ev) {
 			if (SoomlaProfile.IsProviderNativelyImplemented(ev.Provider)) return;
 			soomlaProfile_PushEventReportScoreFinished(ev.Provider.ToString(), ev.Destination.toJSONObject().ToString(), ev.Score.toJSONObject().ToString(), ev.Payload);
 		}
 
-		protected override void _pushEventReportScoreFailed(SubmitScoreFailedEvent ev) {
+		protected override void _pushEventSubmitScoreFailed(SubmitScoreFailedEvent ev) {
 			if (SoomlaProfile.IsProviderNativelyImplemented(ev.Provider)) return;
 			soomlaProfile_PushEventReportScoreFailed(ev.Provider.ToString(), ev.Destination.toJSONObject().ToString(), ev.ErrorDescription, ev.Payload);
 		}
