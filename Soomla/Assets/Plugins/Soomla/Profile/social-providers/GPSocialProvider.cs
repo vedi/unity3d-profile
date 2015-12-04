@@ -17,7 +17,7 @@ using System.Collections.Generic;
 
 namespace Soomla.Profile
 {
-	public class GPSocialProvider : SocialProvider
+	public class GPSocialProvider : ISocialProvider
 	{
 		private static string TAG = "SOOMLA GPSocialProvider";
 
@@ -28,89 +28,91 @@ namespace Soomla.Profile
 		/// <summary>
 		/// See docs in <see cref="SoomlaProfile.UpdateStatus"/>
 		/// </summary>
-		public override void UpdateStatus(string status, SocialActionSuccess success, SocialActionFailed fail) {}
+		public void UpdateStatus(string status, SocialActionSuccess success, SocialActionFailed fail) {}
 
 		/// <summary>
 		/// See docs in <see cref="SoomlaProfile.UpdateStatusDialog"/>
 		/// </summary>
-		public override void UpdateStatusDialog(string link, SocialActionSuccess success, SocialActionFailed fail) {}
+		public void UpdateStatusDialog(string link, SocialActionSuccess success, SocialActionFailed fail) {}
 
 		/// <summary>
 		/// See docs in <see cref="SoomlaProfile.UpdateStory"/>
 		/// </summary>
-		public override void UpdateStory(string message, string name, string caption, string description,
+		public void UpdateStory(string message, string name, string caption, string description,
 		                        string link, string pictureUrl, SocialActionSuccess success, SocialActionFailed fail, SocialActionCancel cancel) {}
 
 		/// <summary>
 		/// See docs in <see cref="SoomlaProfile.UpdateStoryDialog"/>
 		/// </summary>
-		public override void UpdateStoryDialog(string name, string caption, string description, string link, string picture, 
+		public void UpdateStoryDialog(string name, string caption, string description, string link, string picture,
 		                                       SocialActionSuccess success, SocialActionFailed fail, SocialActionCancel cancel) {}
 		/// <summary>
 		/// See docs in <see cref="SoomlaProfile.UploadImage"/>
 		/// </summary>
-		public override void UploadImage(byte[] texBytes, string fileName, string message, SocialActionSuccess success, SocialActionFailed fail, SocialActionCancel cancel) {}
+		public void UploadImage(byte[] texBytes, string fileName, string message, SocialActionSuccess success, SocialActionFailed fail, SocialActionCancel cancel) {}
 		
 		/// <summary>
 		/// See docs in <see cref="SoomlaProfile.GetContacts"/>
 		/// </summary>
-		public override void GetContacts(bool fromStart, ContactsSuccess success, ContactsFailed fail) {}
+		public void GetContacts(bool fromStart, ContactsSuccess success, ContactsFailed fail) {}
 
 		/// <summary>
 		/// See docs in <see cref="SoomlaProfile.GetFeed"/>
 		/// </summary>
-		public override void GetFeed(bool fromStart, FeedSuccess success, FeedFailed fail) {}
+		public void GetFeed(bool fromStart, FeedSuccess success, FeedFailed fail) {}
 		
 		/// <summary>
 		/// See docs in <see cref="SoomlaProfile.Logout"/>
 		/// </summary>
-		public override void Logout(LogoutSuccess success, LogoutFailed fail) {}
+		public void Logout(LogoutSuccess success, LogoutFailed fail) {}
 		
 		/// <summary>
 		/// See docs in <see cref="SoomlaProfile.Login"/>
 		/// </summary>
-		public override void Login(LoginSuccess success, LoginFailed fail, LoginCancelled cancel) {}
+		public void Login(LoginSuccess success, LoginFailed fail, LoginCancelled cancel) {}
 
 		/// <summary>
 		/// See docs in <see cref="SoomlaProfile.GetUserProfile"/>
 		/// </summary>
-		public override void GetUserProfile(GetUserProfileSuccess success, GetUserProfileFailed fail) {
+		public void GetUserProfile(GetUserProfileSuccess success, GetUserProfileFailed fail) {
 		}
 		
 		/// <summary>
 		/// See docs in <see cref="SoomlaProfile.IsLoggedIn"/>
 		/// </summary>
-		public override bool IsLoggedIn() {
+		public bool IsLoggedIn() {
 			return false;
 		}
 
 		/// <summary>
-		/// See docs in <see cref="SocialProvider.IsAutoLogin"/>
+		/// See docs in <see cref="ISocialProvider.IsAutoLogin"/>
 		/// </summary>
 		/// <returns>value of autoLogin
-		public override bool IsAutoLogin() {
+		public bool IsAutoLogin() {
 			return false;
 		}
 		
 		/// <summary>
 		/// See docs in <see cref="SoomlaProfile.Invite"/>
 		/// </summary>
-		public override void Invite (string inviteMessage, string dialogTitle, InviteSuccess success, InviteFailed fail, InviteCancelled cancel) {}
+		public void Invite (string inviteMessage, string dialogTitle, InviteSuccess success, InviteFailed fail, InviteCancelled cancel) {}
 		
 		/// <summary>
 		/// See docs in <see cref="SoomlaProfile.AppRequest"/>
 		/// </summary>
-		public override void AppRequest(string message, string[] to, string extraData, string dialogTitle, AppRequestSuccess success, AppRequestFailed fail) {}
+		public void AppRequest(string message, string[] to, string extraData, string dialogTitle, AppRequestSuccess success, AppRequestFailed fail) {}
 		
 		/// <summary>
 		/// See docs in <see cref="SoomlaProfile.Like"/>
 		/// </summary>
-		public override void Like(string pageId) {
+		public void Like(string pageId) {
 			SoomlaUtils.LogDebug (TAG, "Like");
 			Application.OpenURL("https://plus.google.com/+" + pageId);
 		}
 
-		public override bool IsNativelyImplemented(){
+		public void Configure(Dictionary<string, string> providerParams) { }
+
+		public bool IsNativelyImplemented(){
 			return true;
 		}
 	}
