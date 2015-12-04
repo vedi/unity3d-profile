@@ -35,7 +35,7 @@ namespace Soomla.Profile
 		/// <summary>
 		/// See docs in <see cref="SoomlaProfile.GetContacts"/>
 		/// </summary>
-		void GetContacts(bool fromStart, SocialPageDataSuccess<UserProfile> success, FailureHandler fail);
+		void GetContacts(bool fromStart, ContactsSuccess success, ContactsFailed fail);
 
 		void GetLeaderboards(SocialPageDataSuccess<Leaderboard> success, FailureHandler fail);
 

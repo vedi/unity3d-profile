@@ -17,11 +17,11 @@ using System.Collections.Generic;
 
 namespace Soomla.Profile
 {
-	public class GPSocialProvider : ISocialProvider
+	public class GoogleProvider : ISocialProvider, IGameServicesProvider
 	{
-		private static string TAG = "SOOMLA GPSocialProvider";
+		private static string TAG = "SOOMLA GoogleProvider";
 
-		public GPSocialProvider () {
+		public GoogleProvider () {
 			SoomlaProfile.ProviderBecameReady(this);
 		}
 
@@ -109,6 +109,12 @@ namespace Soomla.Profile
 			SoomlaUtils.LogDebug (TAG, "Like");
 			Application.OpenURL("https://plus.google.com/+" + pageId);
 		}
+
+		public void GetLeaderboards(SocialPageDataSuccess<Leaderboard> success, FailureHandler fail) {}
+
+		public void GetScores(Leaderboard owner, bool fromStart, SocialPageDataSuccess<Score> success, FailureHandler fail) {}
+
+		public void SubmitScore(Leaderboard to, int value, SingleObjectSuccess<Score> success, FailureHandler fail) {}
 
 		public void Configure(Dictionary<string, string> providerParams) { }
 

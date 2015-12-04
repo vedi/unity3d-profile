@@ -89,7 +89,7 @@ namespace Soomla.Profile
 			providers.Add(Provider.FACEBOOK, new FBSocialProvider());
 #endif
 #if SOOMLA_GOOGLE
-			providers.Add(Provider.GOOGLE, new GPSocialProvider());
+			providers.Add(Provider.GOOGLE, new GoogleProvider());
 #endif
 #if SOOMLA_TWITTER
 			providers.Add(Provider.TWITTER, new TwitterSocialProvider());
