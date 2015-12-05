@@ -4,6 +4,7 @@ import com.soomla.BusProvider;
 import com.soomla.SoomlaUtils;
 import com.soomla.profile.domain.IProvider;
 import com.soomla.profile.domain.UserProfile;
+import com.soomla.profile.domain.gameservices.*;
 import com.soomla.profile.events.ProfileInitializedEvent;
 import com.soomla.profile.events.UserProfileUpdatedEvent;
 import com.soomla.profile.events.UserRatingEvent;
@@ -14,8 +15,10 @@ import com.soomla.profile.events.auth.LoginStartedEvent;
 import com.soomla.profile.events.auth.LogoutFailedEvent;
 import com.soomla.profile.events.auth.LogoutFinishedEvent;
 import com.soomla.profile.events.auth.LogoutStartedEvent;
+import com.soomla.profile.events.gameservices.*;
 import com.soomla.profile.events.social.*;
 import com.soomla.profile.social.ISocialProvider;
+import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 import com.unity3d.player.UnityPlayer;
 
@@ -417,6 +420,147 @@ public class ProfileEventHandler {
         }
     }
 
+    @Subscribe
+    public void onGetLeaderboardsStarted(final GetLeaderboardsStartedEvent getLeaderboardsStartedEvent) {
+        IProvider.Provider provider = getLeaderboardsStartedEvent.Provider;
+        JSONObject eventJSON = new JSONObject();
+        try {
+            eventJSON.put("provider", provider.getValue());
+            eventJSON.put("payload", getLeaderboardsStartedEvent.Payload);
+            UnitySendFilteredMessage(eventJSON.toString(), "onGetLeaderboardsStarted", provider.getValue());
+        } catch (JSONException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+    @Subscribe
+    public void onGetLeaderboardsFinished(final GetLeaderboardsFinishedEvent getLeaderboardsFinishedEvent) {
+        IProvider.Provider provider = getLeaderboardsFinishedEvent.Provider;
+        JSONObject eventJSON = new JSONObject();
+        try {
+            JSONArray leaderboardsJSONArray = new JSONArray();
+            for (Leaderboard leaderboard : getLeaderboardsFinishedEvent.Leaderboards) {
+                leaderboardsJSONArray.put(leaderboard.toJSONObject());
+            }
+            eventJSON.put("provider", provider.getValue());
+            eventJSON.put("leaderboards", leaderboardsJSONArray);
+            eventJSON.put("payload", getLeaderboardsFinishedEvent.Payload);
+            UnitySendFilteredMessage(eventJSON.toString(), "onGetLeaderboardsFinished", provider.getValue());
+        } catch (JSONException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+    @Subscribe
+    public void onGetLeaderboardsFailed(final GetLeaderboardsFailedEvent getLeaderboardsFailedEvent) {
+        IProvider.Provider provider = getLeaderboardsFailedEvent.Provider;
+        JSONObject eventJSON = new JSONObject();
+        try {
+            eventJSON.put("provider", provider.getValue());
+            eventJSON.put("message", getLeaderboardsFailedEvent.ErrorDescription);
+            eventJSON.put("payload", getLeaderboardsFailedEvent.Payload);
+            UnitySendFilteredMessage(eventJSON.toString(), "onGetLeaderboardsFailed", provider.getValue());
+        } catch (JSONException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+    @Subscribe
+    public void onGetScoresStarted(final GetScoresStartedEvent getScoresStartedEvent) {
+        IProvider.Provider provider = getScoresStartedEvent.Provider;
+        JSONObject eventJSON = new JSONObject();
+        try {
+            eventJSON.put("provider", provider.getValue());
+            eventJSON.put("fromStart", getScoresStartedEvent.FromStart);
+            eventJSON.put("leaderboard", getScoresStartedEvent.Leaderboard.toJSONObject());
+            eventJSON.put("payload", getScoresStartedEvent.Payload);
+            UnitySendFilteredMessage(eventJSON.toString(), "onGetScoresStarted", provider.getValue());
+        } catch (JSONException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+    @Subscribe
+    public void onGetScoresFinished(final GetScoresFinishedEvent getScoresFinishedEvent) {
+        IProvider.Provider provider = getScoresFinishedEvent.Provider;
+        JSONObject eventJSON = new JSONObject();
+        try {
+            JSONArray scoresJSONArray = new JSONArray();
+            for (Score leaderboard : getScoresFinishedEvent.Scores) {
+                scoresJSONArray.put(leaderboard.toJSONObject());
+            }
+            eventJSON.put("provider", provider.getValue());
+            eventJSON.put("leaderboard", getScoresFinishedEvent.Leaderboard.toJSONObject());
+            eventJSON.put("scores", scoresJSONArray);
+            eventJSON.put("hasMore", getScoresFinishedEvent.HasMore);
+            eventJSON.put("payload", getScoresFinishedEvent.Payload);
+            UnitySendFilteredMessage(eventJSON.toString(), "onGetScoresFinished", provider.getValue());
+        } catch (JSONException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+    @Subscribe
+    public void onGetScoresFailed(final GetScoresFailedEvent getScoresFailedEvent) {
+        IProvider.Provider provider = getScoresFailedEvent.Provider;
+        JSONObject eventJSON = new JSONObject();
+        try {
+            eventJSON.put("provider", provider.getValue());
+            eventJSON.put("leaderboard", getScoresFailedEvent.Leaderboard.toJSONObject());
+            eventJSON.put("fromStart", getScoresFailedEvent.FromStart);
+            eventJSON.put("message", getScoresFailedEvent.ErrorDescription);
+            eventJSON.put("payload", getScoresFailedEvent.Payload);
+            UnitySendFilteredMessage(eventJSON.toString(), "onGetLeaderboardsFailed", provider.getValue());
+        } catch (JSONException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+    @Subscribe
+    public void onSubmitScoreStarted(final SubmitScoreStartedEvent submitScoreStartedEvent) {
+        IProvider.Provider provider = submitScoreStartedEvent.Provider;
+        JSONObject eventJSON = new JSONObject();
+        try {
+            eventJSON.put("provider", provider.getValue());
+            eventJSON.put("leaderboard", submitScoreStartedEvent.Leaderboard.toJSONObject());
+            eventJSON.put("payload", submitScoreStartedEvent.Payload);
+            UnitySendFilteredMessage(eventJSON.toString(), "onGetScoresStarted", provider.getValue());
+        } catch (JSONException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+    @Subscribe
+    public void onSubmitScoreFinished(final SubmitScoreFinishedEvent submitScoreFinishedEvent) {
+        IProvider.Provider provider = submitScoreFinishedEvent.Provider;
+        JSONObject eventJSON = new JSONObject();
+        try {
+
+            eventJSON.put("provider", provider.getValue());
+            eventJSON.put("leaderboard", submitScoreFinishedEvent.Leaderboard.toJSONObject());
+            eventJSON.put("scores", submitScoreFinishedEvent.Score.toJSONObject());
+            eventJSON.put("payload", submitScoreFinishedEvent.Payload);
+            UnitySendFilteredMessage(eventJSON.toString(), "onGetScoresFinished", provider.getValue());
+        } catch (JSONException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+    @Subscribe
+    public void onSubmitScoreFailed(final SubmitScoreFailedEvent submitScoreFailedEvent) {
+        IProvider.Provider provider = submitScoreFailedEvent.Provider;
+        JSONObject eventJSON = new JSONObject();
+        try {
+            eventJSON.put("provider", provider.getValue());
+            eventJSON.put("leaderboard", submitScoreFailedEvent.Leaderboard.toJSONObject());
+            eventJSON.put("message", submitScoreFailedEvent.ErrorDescription);
+            eventJSON.put("payload", submitScoreFailedEvent.Payload);
+            UnitySendFilteredMessage(eventJSON.toString(), "onGetLeaderboardsFailed", provider.getValue());
+        } catch (JSONException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
     private static void UnitySendFilteredMessage(String message, String recipient, int provider) {
         //don't send to facebook!
         if (provider == 0)
@@ -533,7 +677,7 @@ public class ProfileEventHandler {
                 invitedIds.add(jsonInvited.getString(i));
             }
         } catch (JSONException e) {
-            SoomlaUtils.LogError(TAG, "(pushEventGetContactsFinished) Unable to parse user profiles from Unity " + invitedIdsStr +
+            SoomlaUtils.LogError(TAG, "(pushEventInviteFinished) Unable to parse user profiles from Unity " + invitedIdsStr +
                     "reason: " + e.getLocalizedMessage());
         }
         BusProvider.getInstance().post(new InviteFinishedEvent(provider, socialActionType, requestId, invitedIds, payload));
@@ -549,5 +693,104 @@ public class ProfileEventHandler {
         IProvider.Provider provider = IProvider.Provider.getEnum(providerStr);
         ISocialProvider.SocialActionType socialActionType = ISocialProvider.SocialActionType.getEnum(actionTypeStr);
         BusProvider.getInstance().post(new InviteFailedEvent(provider, socialActionType, message, payload));
+    }
+
+    protected static void pushEventGetLeaderboardsStarted(String providerStr, String payload) {
+        BusProvider.getInstance().post(new GetLeaderboardsStartedEvent(IProvider.Provider.getEnum(providerStr), payload));
+    }
+
+    protected static void pushEventGetLeaderboardsFinished(String providerStr, String leaderbardsJson, String payload) {
+        List<Leaderboard> leaderboards = new ArrayList<Leaderboard> ();
+        try {
+            JSONArray jsonArray = new JSONArray(leaderbardsJson);
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject leaderboardJSON = jsonArray.getJSONObject(i);
+                Leaderboard leaderboard = new Leaderboard(leaderboardJSON);
+                leaderboards.add(leaderboard);
+            }
+        } catch (JSONException e) {
+            SoomlaUtils.LogError(TAG, "(pushEventGetLeaderboardsFinished) Unable to parse leaderboards from Unity " + leaderbardsJson +
+                    "reason: " + e.getLocalizedMessage());
+        }
+        BusProvider.getInstance().post(new GetLeaderboardsFinishedEvent(IProvider.Provider.getEnum(providerStr), leaderboards, payload));
+    }
+
+    protected static void pushEventGetLeaderboardsFailed(String providerStr, String message, String payload) {
+        BusProvider.getInstance().post(new GetLeaderboardsFailedEvent(IProvider.Provider.getEnum(providerStr), message, payload));
+    }
+
+    protected static void pushEventGetScoresStarted(String providerStr, String fromJson, boolean fromStart, String payload) {
+        Leaderboard leaderboard = null;
+        try {
+            leaderboard = new Leaderboard(new JSONObject(fromJson));
+        } catch (JSONException e) {
+            SoomlaUtils.LogError(TAG, "(pushEventGetContactsFinished) Unable to parse user profiles from Unity " + fromJson +
+                    "reason: " + e.getLocalizedMessage());
+        }
+        BusProvider.getInstance().post(new GetScoresStartedEvent(IProvider.Provider.getEnum(providerStr), leaderboard, fromStart, payload));
+    }
+
+    protected static void pushEventGetScoresFinished(String providerStr, String fromJson, String scoresJson, boolean hasMore, String payload) {
+        Leaderboard leaderboard = null;
+        List<Score> scores = new ArrayList<Score> ();
+        try {
+            leaderboard = new Leaderboard(new JSONObject(fromJson));
+            JSONArray jsonArray = new JSONArray(scoresJson);
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject scoreJSON = jsonArray.getJSONObject(i);
+                Score score = new Score(scoreJSON);
+                scores.add(score);
+            }
+        } catch (JSONException e) {
+            SoomlaUtils.LogError(TAG, "(pushEventGetScoresFinished) Unable to parse scores from Unity " + scoresJson +
+                    "reason: " + e.getLocalizedMessage());
+        }
+        BusProvider.getInstance().post(new GetScoresFinishedEvent(IProvider.Provider.getEnum(providerStr), leaderboard, scores, hasMore, payload));
+    }
+
+    protected static void pushEventGetScoresFailed(String providerStr, String fromJson, String message, boolean fromStart, String payload) {
+        Leaderboard leaderboard = null;
+        try {
+            leaderboard = new Leaderboard(new JSONObject(fromJson));
+        } catch (JSONException e) {
+            SoomlaUtils.LogError(TAG, "(pushEventGetScoresFailed) Unable to parse user profiles from Unity " + fromJson +
+                    "reason: " + e.getLocalizedMessage());
+        }
+        BusProvider.getInstance().post(new GetScoresFailedEvent(IProvider.Provider.getEnum(providerStr), leaderboard, fromStart, message, payload));
+    }
+
+    protected static void pushEventSubmitScoreStarted(String providerStr, String toJson, String payload) {
+        Leaderboard leaderboard = null;
+        try {
+            leaderboard = new Leaderboard(new JSONObject(toJson));
+        } catch (JSONException e) {
+            SoomlaUtils.LogError(TAG, "(pushEventSubmitScoreStarted) Unable to parse user profiles from Unity " + toJson +
+                    "reason: " + e.getLocalizedMessage());
+        }
+        BusProvider.getInstance().post(new SubmitScoreStartedEvent(IProvider.Provider.getEnum(providerStr), leaderboard, payload));
+    }
+
+    protected static void pushEventSubmitScoreFinished(String providerStr, String toJson, String scoreJson, String payload) {
+        Leaderboard leaderboard = null;
+        Score score = null;
+        try {
+            leaderboard = new Leaderboard(new JSONObject(toJson));
+            score = new Score(new JSONObject(scoreJson));
+        } catch (JSONException e) {
+            SoomlaUtils.LogError(TAG, "(pushEventSubmitScoreFinished) Unable to parse user profiles from Unity " + toJson +
+                    "reason: " + e.getLocalizedMessage());
+        }
+        BusProvider.getInstance().post(new SubmitScoreFinishedEvent(IProvider.Provider.getEnum(providerStr), leaderboard, score, payload));
+    }
+
+    protected static void pushEventSubmitScoreFailed(String providerStr, String toJson, String message, String payload) {
+        Leaderboard leaderboard = null;
+        try {
+            leaderboard = new Leaderboard(new JSONObject(toJson));
+        } catch (JSONException e) {
+            SoomlaUtils.LogError(TAG, "(pushEventSubmitScoreFailed) Unable to parse user profiles from Unity " + toJson +
+                    "reason: " + e.getLocalizedMessage());
+        }
+        BusProvider.getInstance().post(new SubmitScoreFailedEvent(IProvider.Provider.getEnum(providerStr), leaderboard, message, payload));
     }
 }
