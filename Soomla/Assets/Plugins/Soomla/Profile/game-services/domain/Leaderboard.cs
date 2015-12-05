@@ -32,7 +32,7 @@ namespace Soomla.Profile {
 		public readonly string IconURL;
 
 		public Leaderboard(JSONObject jsonLB) {
-			this.ID = jsonLB[JSONConsts.SOOM_ENTITY_ID].str;
+			this.ID = jsonLB[PJSONConsts.UP_IDENTIFIER].str;
 			this.Provider = Provider.fromString(jsonLB[PJSONConsts.UP_PROVIDER].str);
 			this.Name = jsonLB[PJSONConsts.UP_NAME].str;
 			this.IconURL = jsonLB[PJSONConsts.UP_ICON_URL].str;
@@ -40,7 +40,7 @@ namespace Soomla.Profile {
 
 		public JSONObject toJSONObject() {
 			JSONObject obj = new JSONObject();
-			obj.AddField(JSONConsts.SOOM_ENTITY_ID, this.ID);
+			obj.AddField(PJSONConsts.UP_IDENTIFIER, this.ID);
 			obj.AddField(PJSONConsts.UP_PROVIDER, this.Provider.ToString());
 			obj.AddField(PJSONConsts.UP_NAME, this.Name);
 			obj.AddField(PJSONConsts.UP_ICON_URL, this.IconURL);
