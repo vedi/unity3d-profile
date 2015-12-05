@@ -1162,7 +1162,8 @@ namespace Soomla.Profile
 			Dictionary<string, string> gpParams = new Dictionary<string, string>()
 			{
 				{"clientId", ProfileSettings.GPClientId},
-				{"autoLogin", ProfileSettings.GPAutoLogin.ToString()}
+				{"autoLogin", ProfileSettings.GPAutoLogin.ToString()},
+				{"enableGameServices", ProfileSettings.GPEnableGS.ToString()}
 			};
 
 			Dictionary<string, string> twParams = new Dictionary<string, string> ()

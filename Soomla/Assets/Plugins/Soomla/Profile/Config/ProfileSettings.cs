@@ -87,6 +87,7 @@ namespace Soomla.Profile
 		GUIContent fbPermissionsContent = new GUIContent ("Login Permissions [?]", "Permissions your app will request from users on login");
 		
 		GUIContent gpClientId = new GUIContent ("Client ID [?]", "Client id of your google+ app (iOS only)");
+		GUIContent enableGPGS = new GUIContent ("Enable GPGS [?]", "Allows to use Google Play Game Services scope (leaderboards, scores, etc.)");
 		
 		GUIContent twCustKey = new GUIContent ("Consumer Key [?]", "Consumer key of your twitter app");
 		GUIContent twCustSecret = new GUIContent ("Consumer Secret [?]", "Consumer secret of your twitter app");
@@ -359,6 +360,11 @@ namespace Soomla.Profile
 				GPAutoLogin = EditorGUILayout.Toggle(autoLoginContent, GPAutoLogin);
 				EditorGUILayout.EndHorizontal();
 
+				EditorGUILayout.BeginHorizontal();
+				EditorGUILayout.LabelField(SoomlaEditorScript.EmptyContent, SoomlaEditorScript.SpaceWidth, SoomlaEditorScript.FieldHeight);
+				GPEnableGS = EditorGUILayout.Toggle(enableGPGS, GPEnableGS);
+				EditorGUILayout.EndHorizontal();
+
 				EditorGUI.EndDisabledGroup();
 				break;
 			case "twitter":
@@ -599,6 +605,23 @@ namespace Soomla.Profile
 				if (Convert.ToBoolean(v) != value)
 				{
 					SoomlaEditorScript.SetConfigValue(ProfileSettingsPrefix, "GoogleAutoLogin", value.ToString());
+					SoomlaEditorScript.DirtyEditor ();
+				}
+			}
+		}
+
+		public static bool GPEnableGS
+		{
+			get {
+				string value = SoomlaEditorScript.GetConfigValue(ProfileSettingsPrefix, "GoogleEnableGPGS");
+				return value != null ? Convert.ToBoolean(value) : false;
+			}
+			set
+			{
+				string v = SoomlaEditorScript.GetConfigValue(ProfileSettingsPrefix, "GoogleEnableGPGS");
+				if (Convert.ToBoolean(v) != value)
+				{
+					SoomlaEditorScript.SetConfigValue(ProfileSettingsPrefix, "GoogleEnableGPGS", value.ToString());
 					SoomlaEditorScript.DirtyEditor ();
 				}
 			}
