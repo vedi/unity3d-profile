@@ -74,6 +74,10 @@ namespace Soomla.Profile
 			
 			//google play services version
 			SoomlaManifestTools.AddMetaDataTag("com.google.android.gms.version", "@integer/google_play_services_version");
+			if (ProfileSettings.GPEnableGS) {
+				string GPAppId = ProfileSettings.GPClientId.Split(new char[]{'-'})[0];
+				SoomlaManifestTools.AddMetaDataTag("com.google.android.gms.games.APP_ID", GPAppId);
+			}
 		}
 
 		private void RemoveGoogleFromManifest(){
@@ -85,6 +89,7 @@ namespace Soomla.Profile
 			//SoomlaManifestTools.RemovePermission("android.permission.USE_CREDENTIALS");
 			SoomlaManifestTools.RemoveActivity("com.soomla.profile.social.google.SoomlaGooglePlus$SoomlaGooglePlusActivity");
 			SoomlaManifestTools.RemoveApplicationElement("meta-data", "com.google.android.gms.version");
+			SoomlaManifestTools.RemoveApplicationElement("meta-data", "com.google.android.gms.games.APP_ID");
 		}
 		
 		public void HandleTwitterManifest()
