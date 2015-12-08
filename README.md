@@ -33,12 +33,11 @@ unity3d-profile easily connects to SOOMLA's virtual economy model (unity3d-store
 
 #### Pre baked unitypackage:
 
-[unity3d-profile v2.4.0](http://library.soom.la/fetch/unity3d-profile/2.4.0?cf=github)  
+[unity3d-profile v2.4.0](https://www.assetstore.unity3d.com/en/#!/content/24601)  
 
 #### From sources:
  - Clone this repository recursively: `git clone --recursive https://github.com/soomla/unity3d-profile.git`
  - Run `./build_all` from project directory
- - Take created binaries from `build` directory and use it!
 
 ## Debugging
 
@@ -55,7 +54,7 @@ $ git clone --recursive git@github.com:soomla/unity3d-profile.git
 
 ## Getting Started
 
-1. Download and import [soomla-unity3d-core.unitypackage](http://library.soom.la/fetch/unity3d-core/latest?cf=github) and [unity3d-profile.unitypackage](http://library.soom.la/fetch/unity3d-profile/latest?cf=github). If you also want to use Store related rewards you'll need to go over the instructions of [unity3d-store](https://github.com/soomla/unity3d-store)
+1. Download and import [unity3d-profile](https://www.assetstore.unity3d.com/en/#!/content/24601). If you also want to use Store related rewards you'll need to go over the instructions of [unity3d-store](https://github.com/soomla/unity3d-store)
 2. ~~Drag the `CoreEvents` and `ProfileEvents` Prefabs from `Assets/Soomla/Prefabs` into your scene. You should see it listed in the "Hierarchy" panel. [This step MUST be done for unity3d-profile to work properly!]~~
 
     >This step is no longer required starting from Profile v2.2.0
