@@ -39,7 +39,7 @@ namespace Soomla.Profile
 	public delegate void FeedFailed(string message);
 	public delegate void FeedSuccess(SocialPageData<String> feedData);
 
-	public interface ISocialProvider : IAuthProvider
+	public interface ISocialProvider : IProvider
 	{
 		/// <summary>
 		/// See docs in <see cref="SoomlaProfile.UpdateStatus"/>

@@ -17,7 +17,7 @@ using System.Collections.Generic;
 
 namespace Soomla.Profile
 {
-	public class GoogleProvider : ISocialProvider, IGameServicesProvider
+	public class GoogleProvider : IAuthProvider, ISocialProvider, IGameServicesProvider
 	{
 		private static string TAG = "SOOMLA GoogleProvider";
 
@@ -115,6 +115,8 @@ namespace Soomla.Profile
 		public void GetScores(Leaderboard owner, bool fromStart, SocialPageDataSuccess<Score> success, FailureHandler fail) {}
 
 		public void SubmitScore(Leaderboard to, int value, SingleObjectSuccess<Score> success, FailureHandler fail) {}
+
+		public void ShowLeaderboards() {}
 
 		public void Configure(Dictionary<string, string> providerParams) { }
 

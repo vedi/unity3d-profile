@@ -18,7 +18,7 @@ using System.Collections.Generic;
 namespace Soomla.Profile
 {
 #if UNITY_IOS || UNITY_EDITOR
-	public class GameCenterGSProvider : IGameServicesProvider
+	public class GameCenterGSProvider : IAuthProvider, IGameServicesProvider
 	{
 		
 		public GameCenterGSProvider () {
@@ -53,16 +53,13 @@ namespace Soomla.Profile
 			return false;
 		}
 
-		/// <summary>
-		/// See docs in <see cref="SoomlaProfile.GetContacts"/>
-		/// </summary>
-		public void GetContacts(bool fromStart, ContactsSuccess success, ContactsFailed fail) {}
-
 		public void GetLeaderboards(SocialPageDataSuccess<Leaderboard> success, FailureHandler fail) {}
 
 		public void GetScores(Leaderboard owner, bool fromStart, SocialPageDataSuccess<Score> success, FailureHandler fail) {}
 
 		public void SubmitScore(Leaderboard to, int value, SingleObjectSuccess<Score> success, FailureHandler fail) {}
+
+		public void ShowLeaderboards() {}
 
 		public void Configure(Dictionary<string, string> providerParams) { }
 

@@ -79,6 +79,9 @@ namespace Soomla.Profile {
 		[DllImport ("__Internal")]
 		private static extern void soomlaProfile_SubmitScore(string provider, string leaderboard, int value, string payload);
 
+		[DllImport ("__Internal")]
+		private static extern void soomlaProfile_ShowLeaderboards(string provider, string payload);
+
 		protected override void _initialize (string customParamsJson) {
 			soomlaProfile_Initialize(customParamsJson);
 		}
@@ -178,6 +181,10 @@ namespace Soomla.Profile {
 
 		protected override void _submitScore(Soomla.Profile.Provider provider, Soomla.Profile.Leaderboard to, int score, string payload) {
 			soomlaProfile_SubmitScore(provider.ToString(), to.toJSONObject().ToString(), score, payload);
+		}
+
+		protected override void _showLeaderboards(Soomla.Profile.Provider provider, string payload) {
+			soomlaProfile_ShowLeaderboards(provider.ToString(), payload);
 		}
 
 		#endif

@@ -1039,6 +1039,26 @@ namespace Soomla.Profile
 			}
 		}
 
+		public static void ShowLeaderboards(Provider provider, string payload = "", Reward reward = null) {
+			IGameServicesProvider targetProvider = (IGameServicesProvider)GetProviderImplementation(provider);
+			string userPayload = (payload == null) ? "" : payload;
+
+			if (targetProvider == null)
+				return;
+
+			if (targetProvider.IsNativelyImplemented())
+			{
+				//fallback to native
+				string rewardId = reward != null ? reward.ID: "";
+				instance._showLeaderboards(provider, userPayload);
+			}
+			else
+			{
+				targetProvider.ShowLeaderboards();
+				ProfileEvents.OnShowLeaderboards(new ShowLeaderboardsEvent(provider, payload));
+			}
+		}
+
 		/// <summary>
 		/// Checks if all the social providers finished their initialization
 		/// </summary>
@@ -1105,6 +1125,8 @@ namespace Soomla.Profile
 		protected virtual void _getScores(Provider provider, Leaderboard from, bool fromStart, string payload) { }
 
 		protected virtual void _submitScore(Provider provider, Leaderboard to, int score, string payload) { }
+
+		protected virtual void _showLeaderboards(Provider provider, string payload) { }
 
 
 		protected virtual UserProfile _getStoredUserProfile(Provider provider) {

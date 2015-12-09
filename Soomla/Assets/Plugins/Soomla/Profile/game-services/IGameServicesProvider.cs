@@ -28,20 +28,15 @@ namespace Soomla.Profile
 	public delegate void SocialPageDataSuccess<T>(SocialPageData<T> contactsData);
 	public delegate void SingleObjectSuccess<T>(T result);
 
-	public interface IGameServicesProvider : IAuthProvider
+	public interface IGameServicesProvider : IProvider
 	{
-
-
-		/// <summary>
-		/// See docs in <see cref="SoomlaProfile.GetContacts"/>
-		/// </summary>
-		void GetContacts(bool fromStart, ContactsSuccess success, ContactsFailed fail);
-
 		void GetLeaderboards(SocialPageDataSuccess<Leaderboard> success, FailureHandler fail);
 
 		void GetScores(Leaderboard owner, bool fromStart, SocialPageDataSuccess<Score> success, FailureHandler fail);
 
 		void SubmitScore(Leaderboard to, int value, SingleObjectSuccess<Score> success, FailureHandler fail);
+
+		void ShowLeaderboards();
 	}
 }
 

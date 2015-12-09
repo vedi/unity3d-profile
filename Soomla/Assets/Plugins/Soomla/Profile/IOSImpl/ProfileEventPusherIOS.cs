@@ -85,6 +85,8 @@ namespace Soomla.Profile {
 		private static extern void soomlaProfile_PushEventReportScoreFinished(string provider, string fromJson, string scoreJson, string payload);
 		[DllImport ("__Internal")]
 		private static extern void soomlaProfile_PushEventReportScoreFailed(string provider, string fromJson, string message, string payload);
+		[DllImport ("__Internal")]
+		private static extern void soomlaProfile_PushEventShowLeaderboards(string provider, string payload);
 
 		// event pushing back to native (when using FB Unity SDK)
 		protected override void _pushEventLoginStarted(Provider provider, bool autoLogin, string payload) {
@@ -241,6 +243,10 @@ namespace Soomla.Profile {
 			soomlaProfile_PushEventReportScoreFailed(ev.Provider.ToString(), ev.Destination.toJSONObject().ToString(), ev.ErrorDescription, ev.Payload);
 		}
 
+		protected override void _pushEventShowLeaderboards(ShowLeaderboardsEvent ev) {
+			if (SoomlaProfile.IsProviderNativelyImplemented(ev.Provider)) return;
+			soomlaProfile_PushEventShowLeaderboards(ev.Provider.ToString(), ev.Payload);
+		}
 #endif
 	}
 }

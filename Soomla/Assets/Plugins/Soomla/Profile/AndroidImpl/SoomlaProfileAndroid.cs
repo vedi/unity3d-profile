@@ -230,6 +230,13 @@ namespace Soomla.Profile {
 			AndroidJNI.PopLocalFrame(IntPtr.Zero);
 		}
 
+		protected override void _showLeaderboards(Soomla.Profile.Provider provider, string payload) {
+			AndroidJNI.PushLocalFrame(100);
+			using(AndroidJavaClass jniSoomlaProfile = new AndroidJavaClass("com.soomla.profile.unity.UnitySoomlaProfile")) {
+				ProfileJNIHandler.CallStaticVoid(jniSoomlaProfile, "showLeaderboards", provider.ToString(), payload);
+			}
+			AndroidJNI.PopLocalFrame(IntPtr.Zero);
+		}
 #endif
 	}
 }

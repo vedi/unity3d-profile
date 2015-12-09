@@ -786,6 +786,23 @@ namespace Soomla.Profile {
 			ProfileEvents.OnSubmitScoreFailed(new SubmitScoreFailedEvent(provider, owner, errorMessage, ProfilePayload.GetUserPayload(payloadJSON)));
 		}
 
+		/// <summary>
+		/// Handles an <c>onShowLeaderboards</c> event
+		/// </summary>
+		/// <param name="message">
+		/// Will contain a numeric representation of <c>Provider</c>
+		/// </param>
+		public void onShowLeaderboards(String message) {
+			SoomlaUtils.LogDebug(TAG, "SOOMLA/UNITY onShowLeaderboards");
+
+			JSONObject eventJson = new JSONObject(message);
+
+			Provider provider = Provider.fromInt ((int)eventJson["provider"].n);
+			JSONObject payloadJSON = new JSONObject(eventJson ["payload"].str);
+
+			ProfileEvents.OnShowLeaderboards(new ShowLeaderboardsEvent(provider, ProfilePayload.GetUserPayload(payloadJSON)));
+		}
+
 		public delegate void Action();
 		public delegate void Action<T1, T2, T3, T4, T5>(T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5);
 
@@ -882,6 +899,8 @@ namespace Soomla.Profile {
 		public static Action<SubmitScoreFinishedEvent> OnSubmitScoreFinished = delegate {};
 		public static Action<SubmitScoreFailedEvent> OnSubmitScoreFailed = delegate {};
 
+		public static Action<ShowLeaderboardsEvent> OnShowLeaderboards = delegate {};
+
 		public class ProfileEventPusher {
 
 			/// <summary>
@@ -915,6 +934,7 @@ namespace Soomla.Profile {
 				ProfileEvents.OnSubmitScoreStarted += _pushEventSubmitScoreStarted;
 				ProfileEvents.OnSubmitScoreFinished += _pushEventSubmitScoreFinished;
 				ProfileEvents.OnSubmitScoreFailed += _pushEventSubmitScoreFailed;
+				ProfileEvents.OnShowLeaderboards += _pushEventShowLeaderboards;
 			}
 
 			// Event pushing back to native (when using FB Unity SDK)
@@ -974,6 +994,8 @@ namespace Soomla.Profile {
 			protected virtual void _pushEventSubmitScoreStarted(SubmitScoreStartedEvent submitScoreStartedEvent) {}
 			protected virtual void _pushEventSubmitScoreFinished(SubmitScoreFinishedEvent submitScoreFinishedEvent) {}
 			protected virtual void _pushEventSubmitScoreFailed(SubmitScoreFailedEvent submitScoreFailedEvent) {}
+
+			protected virtual void _pushEventShowLeaderboards(ShowLeaderboardsEvent showLeaderboardsEvent) {}
 		}
 	}
 }

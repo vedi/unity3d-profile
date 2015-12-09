@@ -321,6 +321,16 @@ namespace Soomla.Profile {
 			}
 			AndroidJNI.PopLocalFrame(IntPtr.Zero);
 		}
+
+		protected override void _pushEventShowLeaderboards(ShowLeaderboardsEvent ev) {
+			if (SoomlaProfile.IsProviderNativelyImplemented(ev.Provider)) return;
+			AndroidJNI.PushLocalFrame(100);
+			using(AndroidJavaClass jniSoomlaProfile = new AndroidJavaClass("com.soomla.profile.unity.ProfileEventHandler")) {
+				ProfileJNIHandler.CallStaticVoid(jniSoomlaProfile, "pushEventShowLeaderboards",
+						ev.Provider.ToString(), ev.Payload);
+			}
+			AndroidJNI.PopLocalFrame(IntPtr.Zero);
+		}
 #endif
 	}
 }

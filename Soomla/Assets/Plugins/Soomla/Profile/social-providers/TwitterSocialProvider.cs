@@ -18,7 +18,7 @@ using Soomla;
 
 namespace Soomla.Profile
 {
-	public class TwitterSocialProvider : ISocialProvider
+	public class TwitterSocialProvider : IAuthProvider, ISocialProvider
 	{
 		private static string TAG = "SOOMLA TwitterSocialProvider";
 
