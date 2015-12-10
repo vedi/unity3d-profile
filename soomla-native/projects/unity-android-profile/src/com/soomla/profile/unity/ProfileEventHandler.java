@@ -561,6 +561,19 @@ public class ProfileEventHandler {
         }
     }
 
+    @Subscribe
+    public void onShowLeaderboards(final ShowLeaderboardsEvent showLeaderboardsEvent) {
+        IProvider.Provider provider = showLeaderboardsEvent.Provider;
+        JSONObject eventJSON = new JSONObject();
+        try {
+            eventJSON.put("provider", provider.getValue());
+            eventJSON.put("payload", showLeaderboardsEvent.Payload);
+            UnitySendFilteredMessage(eventJSON.toString(), "onShowLeaderboards", provider.getValue());
+        } catch (JSONException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
     private static void UnitySendFilteredMessage(String message, String recipient, int provider) {
         //don't send to facebook!
         if (provider == 0)
@@ -792,5 +805,9 @@ public class ProfileEventHandler {
                     "reason: " + e.getLocalizedMessage());
         }
         BusProvider.getInstance().post(new SubmitScoreFailedEvent(IProvider.Provider.getEnum(providerStr), leaderboard, message, payload));
+    }
+
+    protected static void pushEventShowLeaderboards(String providerStr, String payload) {
+        BusProvider.getInstance().post(new ShowLeaderboardsEvent(IProvider.Provider.getEnum(providerStr), payload));
     }
 }

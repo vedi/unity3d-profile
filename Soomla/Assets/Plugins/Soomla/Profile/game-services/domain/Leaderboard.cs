@@ -34,8 +34,16 @@ namespace Soomla.Profile {
 		public Leaderboard(JSONObject jsonLB) {
 			this.ID = jsonLB[PJSONConsts.UP_IDENTIFIER].str;
 			this.Provider = Provider.fromString(jsonLB[PJSONConsts.UP_PROVIDER].str);
-			this.Name = jsonLB[PJSONConsts.UP_NAME].str;
-			this.IconURL = jsonLB[PJSONConsts.UP_ICON_URL].str;
+			if (jsonLB[PJSONConsts.UP_NAME] != null && jsonLB[PJSONConsts.UP_NAME].type == JSONObject.Type.STRING) {
+				this.Name = jsonLB[PJSONConsts.UP_NAME].str;
+			} else {
+				this.Name = "";
+			}
+			if (jsonLB[PJSONConsts.UP_ICON_URL] != null && jsonLB[PJSONConsts.UP_ICON_URL].type == JSONObject.Type.STRING) {
+				this.IconURL = jsonLB[PJSONConsts.UP_ICON_URL].str;
+			} else {
+				this.IconURL = "";
+			}
 		}
 
 		public JSONObject toJSONObject() {

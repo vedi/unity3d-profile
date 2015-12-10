@@ -244,4 +244,11 @@ extern "C"{
                                                    andReward:nil];
     }
 
+    void soomlaProfile_ShowLeaderboards(const char * sProvider, const char * payload) {
+        NSString* providerIdS = [NSString stringWithUTF8String:sProvider];
+        NSString* payloadS = [NSString stringWithUTF8String:payload];
+
+        [[SoomlaProfile getInstance] showLeaderboardsForProvider:[UserProfileUtils providerStringToEnum:providerIdS] andPayload:payloadS];
+    }
+
 }

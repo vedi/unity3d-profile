@@ -54,7 +54,7 @@ namespace Soomla.Profile
 		/// in this class use this <c>providers</c> <c>Dictionary</c> to call the relevant functions
 		/// in each <c>SocialProvider</c> (i.e. Facebook) class.
 		/// </summary>
-		static Dictionary<Provider, IAuthProvider> providers = new Dictionary<Provider, IAuthProvider>();
+		static Dictionary<Provider, IProvider> providers = new Dictionary<Provider, IProvider>();
 
 		static private int unreadyProviders = 0;
 
@@ -99,7 +99,7 @@ namespace Soomla.Profile
 #endif
 
 			// pass params to non-native providers
-			foreach (KeyValuePair<Provider, IAuthProvider> entry in providers) {
+			foreach (KeyValuePair<Provider, IProvider> entry in providers) {
 				if (!entry.Value.IsNativelyImplemented()) {
 					entry.Value.Configure(customParams[entry.Key]);
 				}
@@ -107,15 +107,15 @@ namespace Soomla.Profile
 
 			ProfileEvents.OnSoomlaProfileInitialized += () => {
                 // auto login non-native providers
-                foreach (KeyValuePair<Provider, IAuthProvider> entry in providers) {
-                    if (!entry.Value.IsNativelyImplemented()) {
-                        if (entry.Value.IsAutoLogin()) {
+                foreach (KeyValuePair<Provider, IProvider> entry in providers) {
+                    if (!entry.Value.IsNativelyImplemented() && entry.Value is IAuthProvider) {
+                        if (((IAuthProvider)entry.Value).IsAutoLogin()) {
                             Provider provider = entry.Key;
                             if (wasLoggedInWithProvider(provider)) {
                                 string payload = "";
                                 Reward reward = null;
-                                if (entry.Value.IsLoggedIn()) {
-                                    entry.Value.GetUserProfile((UserProfile userProfile) => {
+                                if (((IAuthProvider)entry.Value).IsLoggedIn()) {
+									((IAuthProvider)entry.Value).GetUserProfile((UserProfile userProfile) => {
                                         setLoggedInForProvider(provider, false);
 										ProfileEvents.OnLoginStarted(provider, true, payload);
 										//ProfileEvents.OnLoginStarted(new LoginStartedEvent(provider, true, payload));
@@ -153,7 +153,7 @@ namespace Soomla.Profile
 
 		private static void login(Provider provider, bool autoLogin, string payload="", Reward reward = null) {
 			SoomlaUtils.LogDebug (TAG, "Trying to login with provider " + provider.ToString ());
-			IAuthProvider targetProvider = GetProviderImplementation(provider);
+			IAuthProvider targetProvider = (IAuthProvider)GetProviderImplementation(provider);
 			string userPayload = (payload == null) ? "" : payload;
 			if (targetProvider == null)
 			{
@@ -206,7 +206,7 @@ namespace Soomla.Profile
 		/// <param name="provider">The provider to log out from.</param>
 		public static void Logout(Provider provider) {
 
-			IAuthProvider targetProvider = GetProviderImplementation(provider);
+			IAuthProvider targetProvider = (IAuthProvider)GetProviderImplementation(provider);
 			if (targetProvider == null)
 				return;
 
@@ -258,7 +258,7 @@ namespace Soomla.Profile
 		/// <param name="provider">The provider to check if the user is logged into.</param>
 		public static bool IsLoggedIn(Provider provider) {
 
-			IAuthProvider targetProvider = GetProviderImplementation(provider);
+			IAuthProvider targetProvider = (IAuthProvider)GetProviderImplementation(provider);
 			if (targetProvider == null)
 				return false;
 
@@ -926,7 +926,7 @@ namespace Soomla.Profile
 		}
 
 		public static bool IsProviderNativelyImplemented(Provider provider) {
-			IAuthProvider targetProvider = GetProviderImplementation(provider);
+			IProvider targetProvider = GetProviderImplementation(provider);
 			if (targetProvider != null) {
 				return targetProvider.IsNativelyImplemented();
 			}
@@ -1161,9 +1161,9 @@ namespace Soomla.Profile
 			#endif
 		}
 
-		private static IAuthProvider GetProviderImplementation (Provider provider)
+		private static IProvider GetProviderImplementation(Provider provider)
 		{
-			IAuthProvider result = null;
+			IProvider result = null;
 			providers.TryGetValue(provider, out result);
 
 //			if (result == null) {

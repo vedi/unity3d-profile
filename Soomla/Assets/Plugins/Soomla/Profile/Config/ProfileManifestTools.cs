@@ -76,7 +76,7 @@ namespace Soomla.Profile
 			SoomlaManifestTools.AddMetaDataTag("com.google.android.gms.version", "@integer/google_play_services_version");
 			if (ProfileSettings.GPEnableGS) {
 				string GPAppId = ProfileSettings.GPClientId.Split(new char[]{'-'})[0];
-				SoomlaManifestTools.AddMetaDataTag("com.google.android.gms.games.APP_ID", GPAppId);
+				SoomlaManifestTools.AddMetaDataTag("com.google.android.gms.games.APP_ID", "\\ " + GPAppId);
 			}
 		}
 

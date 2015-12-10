@@ -165,6 +165,10 @@ public class UnitySoomlaProfile {
         SoomlaProfile.getInstance().submitScore(Provider.getEnum(providerStr), new Leaderboard(new JSONObject(toJson)), score, payload, null);
     }
 
+    public static void showLeaderboards(String providerStr, Activity activity, String payload) throws ProviderNotFoundException {
+        SoomlaProfile.getInstance().showLeaderboards(Provider.getEnum(providerStr), activity, payload);
+    }
+
     /*
     * Helper function to retrieve custom params for SoomlaProfile initialization from Json string.
     * @param customParamsJson has the following structure:

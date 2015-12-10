@@ -287,6 +287,14 @@ extern "C"{
         Leaderboard *from = [[Leaderboard alloc] initWithDictionary:[SoomlaUtils jsonStringToDict:[NSString stringWithUTF8String:fromJson]]];
         [ProfileEventHandling postReportScoreFailed:provider forLeaderboard:from withMessage:message andPayload:payloadS];
     }
+
+
+    void soomlaProfile_PushEventShowLeaderboards(const char * sProvider, const char * payload) {
+        NSString* providerIdS = [NSString stringWithUTF8String:sProvider];
+        NSString* payloadS = [NSString stringWithUTF8String:payload];
+
+        [ProfileEventHandling postShowLeaderboards:[UserProfileUtils providerStringToEnum:providerIdS] withPayload:payloadS];
+    }
 }
 
 @implementation UnityProfileEventDispatcher
@@ -765,6 +773,20 @@ extern "C"{
         
         [UnityProfileEventDispatcher sendMessage:jsonStr
                                      toRecepient:@"onSubmitScoreFailed"
+                                      withFilter:provider];
+    }
+    else if ([notification.name isEqualToString:EVENT_UP_SHOW_LEADERBOARDS]) {
+        NSDictionary* userInfo = [notification userInfo];
+        NSNumber* provider = [userInfo valueForKey:DICT_ELEMENT_PROVIDER];
+        NSString *payload = [userInfo valueForKey:DICT_ELEMENT_PAYLOAD];
+
+        NSString *jsonStr = [SoomlaUtils dictToJsonString:@{
+                @"provider": provider,
+                @"payload": payload
+        }];
+
+        [UnityProfileEventDispatcher sendMessage:jsonStr
+                                     toRecepient:@"onShowLeaderboards"
                                       withFilter:provider];
     }
 }
