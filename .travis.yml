@@ -16,5 +16,6 @@ script:
     - ./soomla-native/projects/unity-android-profile/build_all
     - ./soomla-native/projects/unity-ios-profile/build_all
     - echo > deploy/create_unity.log
+    - find . -name '*.meta' -type f -delete
     - ./deploy/create_deploys | tail -f deploy/create_unity.log
     - cat deploy/create_unity.log
