@@ -1,4 +1,5 @@
 language: objective-c
+osx_image: xcode7.2
 install:
     - git submodule update --init --recursive
     - curl -o android-sdk.zip http://dl.google.com/android/android-sdk_r24.4.1-macosx.zip
