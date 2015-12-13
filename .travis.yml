@@ -16,4 +16,4 @@ script:
     - ./submodules/build_all
     - ./soomla-native/projects/unity-android-profile/build_all
     - ./soomla-native/projects/unity-ios-profile/build_all
-    - ./deploy/create_deploys || cat deploy/create_unity.log
+    - ./deploy/create_deploys || (cat deploy/create_unity.log && $(exit 1))
