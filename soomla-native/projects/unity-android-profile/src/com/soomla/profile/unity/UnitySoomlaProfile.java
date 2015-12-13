@@ -166,7 +166,7 @@ public class UnitySoomlaProfile {
     }
 
     public static void showLeaderboards(String providerStr, Activity activity, String payload) throws ProviderNotFoundException {
-        SoomlaProfile.getInstance().showLeaderboards(Provider.getEnum(providerStr), activity, payload);
+        SoomlaProfile.getInstance().showLeaderboards(Provider.getEnum(providerStr), activity, payload, null);
     }
 
     /*
