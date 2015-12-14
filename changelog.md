@@ -1,3 +1,14 @@
+### v2.4.0 [view commit logs](https://github.com/soomla/unity3d-profile/compare/v2.3.0...v2.4.0)
+
+* New Features
+  * Added Leaderboards to GameCenter
+
+* Fixes
+  * Fixed onProfileInitialized fires multiple times
+
+* Changes
+  * Added saving user settings to PlayerPrefs
+
 ### v2.3.0 [view commit logs](https://github.com/soomla/unity3d-profile/compare/v2.2.1...v2.3.0)
 
 * New Features
