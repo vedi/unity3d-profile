@@ -1,0 +1,11 @@
+#!/bin/sh
+set -e
+DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+cd $DIR
+
+if [ ! -d Soomla/Assets/Facebook ];
+then
+	curl -L -o facebook-sdk.zip http://library.soom.la/fetch/unity3d-profile-facebook/7.2.2?cf=dl_deps
+	unzip -o facebook-sdk.zip -d Soomla
+	rm facebook-sdk.zip
+fi
