@@ -114,7 +114,7 @@ namespace Soomla.Profile
 
 		public void GetScores(Leaderboard owner, bool fromStart, SocialPageDataSuccess<Score> success, FailureHandler fail) {}
 
-		public void SubmitScore(Leaderboard to, int value, SingleObjectSuccess<Score> success, FailureHandler fail) {}
+		public void SubmitScore(Leaderboard targetLeaderboard, int value, SingleObjectSuccess<Score> success, FailureHandler fail) {}
 
 		public void ShowLeaderboards() {}
 

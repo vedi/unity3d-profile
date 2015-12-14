@@ -34,7 +34,7 @@ namespace Soomla.Profile
 
 		void GetScores(Leaderboard owner, bool fromStart, SocialPageDataSuccess<Score> success, FailureHandler fail);
 
-		void SubmitScore(Leaderboard to, int value, SingleObjectSuccess<Score> success, FailureHandler fail);
+		void SubmitScore(Leaderboard targetLeaderboard, int value, SingleObjectSuccess<Score> success, FailureHandler fail);
 
 		void ShowLeaderboards();
 	}
