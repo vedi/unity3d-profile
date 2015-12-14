@@ -25,7 +25,7 @@ namespace Soomla.Profile
 	/// </summary>
 
 	public delegate void FailureHandler(string message);
-	public delegate void SocialPageDataSuccess<T>(SocialPageData<T> contactsData);
+	public delegate void SocialPageDataSuccess<T>(SocialPageData<T> pageData);
 	public delegate void SingleObjectSuccess<T>(T result);
 
 	public interface IGameServicesProvider : IProvider
