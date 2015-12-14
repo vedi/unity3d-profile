@@ -28,7 +28,7 @@ namespace Soomla.Profile
 	/// This class represents the social provider Facebook. The functions implemented below are 
 	/// Facebook-specific. 
 	/// </summary>
-	public class FBSocialProvider : SocialProvider
+	public class FBSocialProvider : IAuthProvider, ISocialProvider
 	{
 		private static string TAG = "SOOMLA FBSocialProvider";
 		private static int DEFAULT_CONTACTS_PAGE_SIZE = 25;
@@ -55,7 +55,7 @@ namespace Soomla.Profile
 		/// </summary>
 		/// <param name="success">Callback function that is called if logout was successful.</param>
 		/// <param name="fail">Callback function that is called if logout failed.</param>
-		public override void Logout(LogoutSuccess success, LogoutFailed fail) {
+		public void Logout(LogoutSuccess success, LogoutFailed fail) {
 			FB.LogOut();
 			success();
 		}
@@ -66,7 +66,7 @@ namespace Soomla.Profile
 		/// <param name="success">Callback function that is called if login was successful.</param>
 		/// <param name="fail">Callback function that is called if login failed.</param>
 		/// <param name="cancel">Callback function that is called if login was cancelled.</param>
-		public override void Login(LoginSuccess success, LoginFailed fail, LoginCancelled cancel) {
+		public void Login(LoginSuccess success, LoginFailed fail, LoginCancelled cancel) {
 			FB.LogInWithReadPermissions(this.loginPermissions, (ILoginResult result) => {
 				if (result.Error != null) {
 					SoomlaUtils.LogDebug (TAG, "LoginCallback[result.Error]: " + result.Error);
@@ -82,7 +82,7 @@ namespace Soomla.Profile
 			});
 		}
 
-		public override void GetUserProfile(GetUserProfileSuccess success, GetUserProfileFailed fail) {
+		public void GetUserProfile(GetUserProfileSuccess success, GetUserProfileFailed fail) {
 			this.fetchPermissions(() => {
 				FB.API("/me?fields=id,name,email,first_name,last_name,picture,languages,gender,location",
 				       HttpMethod.GET, (IGraphResult meResult) => {
@@ -110,15 +110,15 @@ namespace Soomla.Profile
 		/// See docs in <see cref="SoomlaProfile.IsLoggedIn"/>
 		/// </summary>
 		/// <returns>If the user is logged into Facebook, returns <c>true</c>; otherwise, <c>false</c>.</returns>
-		public override bool IsLoggedIn() {
+		public bool IsLoggedIn() {
 			return FB.IsLoggedIn;
 		}
 
 		/// <summary>
-		/// See docs in <see cref="SocialProvider.IsAutoLogin"/>
+		/// See docs in <see cref="ISocialProvider.IsAutoLogin"/>
 		/// </summary>
 		/// <returns>value of autoLogin
-		public override bool IsAutoLogin() {
+		public bool IsAutoLogin() {
 			return this.autoLogin;
 		}
 
@@ -128,7 +128,7 @@ namespace Soomla.Profile
 		/// <param name="status">Status to post.</param>
 		/// <param name="success">Callback function that is called if the status update was successful.</param>
 		/// <param name="fail">Callback function that is called if the status update failed.</param>
-		public override void UpdateStatus(string status, SocialActionSuccess success, SocialActionFailed fail) {
+		public void UpdateStatus(string status, SocialActionSuccess success, SocialActionFailed fail) {
 			checkPublishPermission( ()=> {
 				var formData = new Dictionary<string, string>
 				{
@@ -158,7 +158,7 @@ namespace Soomla.Profile
 		/// <param name="link">Link to post.</param>
 		/// <param name="success">Callback function that is called if the status update was successful.</param>
 		/// <param name="fail">Callback function that is called if the status update failed.</param>
-		public override void UpdateStatusDialog(string link, SocialActionSuccess success, SocialActionFailed fail) {
+		public void UpdateStatusDialog(string link, SocialActionSuccess success, SocialActionFailed fail) {
 			FB.FeedShare(
 				link: new Uri(link),
 				callback: (IShareResult result) => {
@@ -186,7 +186,7 @@ namespace Soomla.Profile
 		/// <param name="success">Callback function that is called if the story update was successful.</param>
 		/// <param name="fail">Callback function that is called if the story update failed.</param>
 		/// <param name="cancel">Callback function that is called if the story update was cancelled.</param>
-		public override void UpdateStory(string message, string name, string caption, string description,
+		public void UpdateStory(string message, string name, string caption, string description,
 		                                 string link, string pictureUrl, SocialActionSuccess success, SocialActionFailed fail, SocialActionCancel cancel) {
 			checkPublishPermission( ()=> {
 				var formData = new Dictionary<string, string>
@@ -225,7 +225,7 @@ namespace Soomla.Profile
 		/// <param name="success">Callback function that is called if the story update was successful.</param>
 		/// <param name="fail">Callback function that is called if the story update failed.</param>
 		/// <param name="cancel">Callback function that is called if the story update was cancelled.</param>
-		public override void UpdateStoryDialog(string name, string caption, string description, string link, string picture, 
+		public void UpdateStoryDialog(string name, string caption, string description, string link, string picture,
 		                                       SocialActionSuccess success, SocialActionFailed fail, SocialActionCancel cancel) {
 			FB.FeedShare(
 				link: new Uri(link),
@@ -261,7 +261,7 @@ namespace Soomla.Profile
 		/// <param name="success">Callback function that is called if the image upload was successful.</param>
 		/// <param name="fail">Callback function that is called if the image upload failed.</param>
 		/// <param name="cancel">Callback function that is called if the image upload was cancelled.</param>
-		public override void UploadImage(byte[] texBytes, string fileName, string message, SocialActionSuccess success, SocialActionFailed fail, SocialActionCancel cancel) {
+		public void UploadImage(byte[] texBytes, string fileName, string message, SocialActionSuccess success, SocialActionFailed fail, SocialActionCancel cancel) {
 			
 			checkPublishPermission( ()=> {
 				var wwwForm = new WWWForm();
@@ -300,7 +300,7 @@ namespace Soomla.Profile
 		/// <param name="fromStart">Should we reset pagination or request the next page</param>
 		/// <param name="success">Callback function that is called if the contacts were fetched successfully.</param>
 		/// <param name="fail">Callback function that is called if fetching contacts failed.</param>
-		public override void GetContacts(bool fromStart, ContactsSuccess success, ContactsFailed fail) {
+		public void GetContacts(bool fromStart, ContactsSuccess success, ContactsFailed fail) {
 			checkPermission("user_friends", ()=> {
 				int pageNumber;
 				if (fromStart || this.lastPageNumber == 0) {
@@ -343,7 +343,7 @@ namespace Soomla.Profile
             });
         }
 
-		public override void GetFeed(bool fromStart, FeedSuccess success, FeedFailed fail) {
+		public void GetFeed(bool fromStart, FeedSuccess success, FeedFailed fail) {
 			checkPermission("user_posts", () => {
 				int pageNumber;
 				if (fromStart || this.lastPageNumber == 0) {
@@ -386,7 +386,7 @@ namespace Soomla.Profile
 			});
 		}
         
-        public override void Invite(string inviteMessage, string dialogTitle, InviteSuccess success, InviteFailed fail, InviteCancelled cancel)
+        public void Invite(string inviteMessage, string dialogTitle, InviteSuccess success, InviteFailed fail, InviteCancelled cancel)
 		{
 			FB.AppRequest(inviteMessage, null, null, null, null, "", dialogTitle, 
 			              (IAppRequestResult result) => {
@@ -431,7 +431,7 @@ namespace Soomla.Profile
 		/// <param name="dialogTitle">Dialog title.</param>
 		/// <param name="success">Callback function that is called if App request succeeded.</param>
 		/// <param name="fail">Callback function that is called if App request failed.</param>
-		public override void AppRequest(string message, string[] to, string extraData, string dialogTitle, AppRequestSuccess success, AppRequestFailed fail) {
+		public void AppRequest(string message, string[] to, string extraData, string dialogTitle, AppRequestSuccess success, AppRequestFailed fail) {
 			FB.AppRequest(message,
 			              to,
 			              null, null, null,
@@ -460,18 +460,18 @@ namespace Soomla.Profile
 		/// </summary>
 		/// <param name="pageName">The name of the page as written in facebook in the URL. 
 		/// For a FB url http://www.facebook.com/MyPage you need to provide pageName="MyPage".</param>
-		public override void Like(string pageId) {
+		public void Like(string pageId) {
 			Application.OpenURL("https://www.facebook.com/" + pageId);
 		}
 
-		public override bool IsNativelyImplemented(){
+		public bool IsNativelyImplemented(){
 			return false;
 		}
 
 		/// <summary>
-		/// See docs in <see cref="SocialProvider.Configure"/>
+		/// See docs in <see cref="ISocialProvider.Configure"/>
 		/// </summary>
-		public override void Configure(Dictionary<string, string> providerParams) {
+		public void Configure(Dictionary<string, string> providerParams) {
 			if (providerParams != null) {
 				if (providerParams.ContainsKey("permissions")) {
 					this.loginPermissions = providerParams["permissions"].Split(',');

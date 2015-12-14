@@ -12,6 +12,7 @@ import com.soomla.profile.SoomlaProfile;
 import com.soomla.profile.data.UserProfileStorage;
 import com.soomla.profile.domain.IProvider;
 import com.soomla.profile.domain.UserProfile;
+import com.soomla.profile.domain.gameservices.Leaderboard;
 import com.soomla.profile.exceptions.ProviderNotFoundException;
 import com.soomla.profile.exceptions.UserProfileNotFoundException;
 
@@ -148,6 +149,24 @@ public class UnitySoomlaProfile {
 
     public static void multiShare(String text, String imageFilePath) {
         SoomlaProfile.getInstance().multiShare(text, imageFilePath);
+    }
+
+    public static void getLeaderboards(String providerStr, String payload) throws ProviderNotFoundException {
+        SoomlaProfile.getInstance().getLeaderboards(Provider.getEnum(providerStr), payload, null);
+    }
+
+    public static void getScores(String providerStr, String fromJson, boolean fromStart, String payload)
+            throws ProviderNotFoundException, JSONException {
+        SoomlaProfile.getInstance().getScores(Provider.getEnum(providerStr), new Leaderboard(new JSONObject(fromJson)), fromStart, payload, null);
+    }
+
+    public static void submitScore(String providerStr, String toJson, long score, String payload)
+            throws ProviderNotFoundException, JSONException {
+        SoomlaProfile.getInstance().submitScore(Provider.getEnum(providerStr), new Leaderboard(new JSONObject(toJson)), score, payload, null);
+    }
+
+    public static void showLeaderboards(String providerStr, Activity activity, String payload) throws ProviderNotFoundException {
+        SoomlaProfile.getInstance().showLeaderboards(Provider.getEnum(providerStr), activity, payload, null);
     }
 
     /*

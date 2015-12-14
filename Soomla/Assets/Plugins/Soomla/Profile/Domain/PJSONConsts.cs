@@ -40,6 +40,8 @@ namespace Soomla.Profile {
 		/** Game Services **/
 
 		public const string UP_IDENTIFIER = "identifier";
+		public const string UP_ICON_URL = "iconUrl";
+		public const string UP_NAME = "name";
 		public const string UP_LEADERBOARD = "leaderboard";
 		public const string UP_USER_PROFILE = "userProfile";
 		public const string UP_SCORE_VALUE = "scoreValue";

@@ -729,13 +729,13 @@ namespace Soomla.Profile {
 		}
 
 		/// <summary>
-		/// Handles an <c>onReportScoreStarted</c> event
+		/// Handles an <c>onSubmitScoreStarted</c> event
 		/// </summary>
 		/// <param name="message">
 		/// Will contain a numeric representation of <c>Provider</c>,
 		/// and payload</param>
-		public void onReportScoreStarted(String message) {
-			SoomlaUtils.LogDebug(TAG, "SOOMLA/UNITY onReportScoreStarted");
+		public void onSubmitScoreStarted(String message) {
+			SoomlaUtils.LogDebug(TAG, "SOOMLA/UNITY onSubmitScoreStarted");
 
 			JSONObject eventJson = new JSONObject(message);
 
@@ -743,17 +743,17 @@ namespace Soomla.Profile {
 			Leaderboard owner = new Leaderboard(eventJson["leaderboard"]);
 			JSONObject payloadJSON = new JSONObject(eventJson ["payload"].str);
 
-			ProfileEvents.OnReportScoreStarted(new ReportScoreStartedEvent(provider, owner, ProfilePayload.GetUserPayload(payloadJSON)));
+			ProfileEvents.OnSubmitScoreStarted(new SubmitScoreStartedEvent(provider, owner, ProfilePayload.GetUserPayload(payloadJSON)));
 		}
 
 		/// <summary>
-		/// Handles an <c>onReportScoreFinished</c> event
+		/// Handles an <c>onSubmitScoreFinished</c> event
 		/// </summary>
 		/// <param name="message">
 		/// Will contain a numeric representation of <c>Provider</c>,
 		/// and payload</param>
-		public void onReportScoreFinished(String message) {
-			SoomlaUtils.LogDebug(TAG, "SOOMLA/UNITY onReportScoreFinished");
+		public void onSubmitScoreFinished(String message) {
+			SoomlaUtils.LogDebug(TAG, "SOOMLA/UNITY onSubmitScoreFinished");
 
 			JSONObject eventJson = new JSONObject(message);
 
@@ -763,17 +763,17 @@ namespace Soomla.Profile {
 
 			JSONObject payloadJSON = new JSONObject(eventJson ["payload"].str);
 
-			ProfileEvents.OnReportScoreFinished(new ReportScoreFinishedEvent(provider, owner, score, ProfilePayload.GetUserPayload(payloadJSON)));
+			ProfileEvents.OnSubmitScoreFinished(new SubmitScoreFinishedEvent(provider, owner, score, ProfilePayload.GetUserPayload(payloadJSON)));
 		}
 
 		/// <summary>
-		/// Handles an <c>onReportScoreFailed</c> event
+		/// Handles an <c>onSubmitScoreFailed</c> event
 		/// </summary>
 		/// <param name="message">
 		/// Will contain a numeric representation of <c>Provider</c>,
 		/// and payload</param>
-		public void onReportScoreFailed(String message) {
-			SoomlaUtils.LogDebug(TAG, "SOOMLA/UNITY onReportScoreFailed");
+		public void onSubmitScoreFailed(String message) {
+			SoomlaUtils.LogDebug(TAG, "SOOMLA/UNITY onSubmitScoreFailed");
 
 			JSONObject eventJson = new JSONObject(message);
 
@@ -783,7 +783,24 @@ namespace Soomla.Profile {
 
 			JSONObject payloadJSON = new JSONObject(eventJson ["payload"].str);
 
-			ProfileEvents.OnReportScoreFailed(new ReportScoreFailedEvent(provider, owner, errorMessage, ProfilePayload.GetUserPayload(payloadJSON)));
+			ProfileEvents.OnSubmitScoreFailed(new SubmitScoreFailedEvent(provider, owner, errorMessage, ProfilePayload.GetUserPayload(payloadJSON)));
+		}
+
+		/// <summary>
+		/// Handles an <c>onShowLeaderboards</c> event
+		/// </summary>
+		/// <param name="message">
+		/// Will contain a numeric representation of <c>Provider</c>
+		/// </param>
+		public void onShowLeaderboards(String message) {
+			SoomlaUtils.LogDebug(TAG, "SOOMLA/UNITY onShowLeaderboards");
+
+			JSONObject eventJson = new JSONObject(message);
+
+			Provider provider = Provider.fromInt ((int)eventJson["provider"].n);
+			JSONObject payloadJSON = new JSONObject(eventJson ["payload"].str);
+
+			ProfileEvents.OnShowLeaderboards(new ShowLeaderboardsEvent(provider, ProfilePayload.GetUserPayload(payloadJSON)));
 		}
 
 		public delegate void Action();
@@ -878,9 +895,11 @@ namespace Soomla.Profile {
 		public static Action<GetScoresFinishedEvent> OnGetScoresFinished = delegate {};
 		public static Action<GetScoresFailedEvent> OnGetScoresFailed = delegate {};
 
-		public static Action<ReportScoreStartedEvent> OnReportScoreStarted = delegate {};
-		public static Action<ReportScoreFinishedEvent> OnReportScoreFinished = delegate {};
-		public static Action<ReportScoreFailedEvent> OnReportScoreFailed = delegate {};
+		public static Action<SubmitScoreStartedEvent> OnSubmitScoreStarted = delegate {};
+		public static Action<SubmitScoreFinishedEvent> OnSubmitScoreFinished = delegate {};
+		public static Action<SubmitScoreFailedEvent> OnSubmitScoreFailed = delegate {};
+
+		public static Action<ShowLeaderboardsEvent> OnShowLeaderboards = delegate {};
 
 		public class ProfileEventPusher {
 
@@ -912,9 +931,10 @@ namespace Soomla.Profile {
 				ProfileEvents.OnGetScoresStarted += _pushEventGetScoresStarted;
 				ProfileEvents.OnGetScoresFinished += _pushEventGetScoresFinished;
 				ProfileEvents.OnGetScoresFailed += _pushEventGetScoresFailed;
-				ProfileEvents.OnReportScoreStarted += _pushEventReportScoreStarted;
-				ProfileEvents.OnReportScoreFinished += _pushEventReportScoreFinished;
-				ProfileEvents.OnReportScoreFailed += _pushEventReportScoreFailed;
+				ProfileEvents.OnSubmitScoreStarted += _pushEventSubmitScoreStarted;
+				ProfileEvents.OnSubmitScoreFinished += _pushEventSubmitScoreFinished;
+				ProfileEvents.OnSubmitScoreFailed += _pushEventSubmitScoreFailed;
+				ProfileEvents.OnShowLeaderboards += _pushEventShowLeaderboards;
 			}
 
 			// Event pushing back to native (when using FB Unity SDK)
@@ -971,9 +991,11 @@ namespace Soomla.Profile {
 			protected virtual void _pushEventGetScoresFinished(GetScoresFinishedEvent getScoresFinishedEvent) {}
 			protected virtual void _pushEventGetScoresFailed(GetScoresFailedEvent getScoresFailedEvent) {}
 
-			protected virtual void _pushEventReportScoreStarted(ReportScoreStartedEvent reportScoreStartedEvent) {}
-			protected virtual void _pushEventReportScoreFinished(ReportScoreFinishedEvent reportScoreFinishedEvent) {}
-			protected virtual void _pushEventReportScoreFailed(ReportScoreFailedEvent reportScoreFailedEvent) {}
+			protected virtual void _pushEventSubmitScoreStarted(SubmitScoreStartedEvent submitScoreStartedEvent) {}
+			protected virtual void _pushEventSubmitScoreFinished(SubmitScoreFinishedEvent submitScoreFinishedEvent) {}
+			protected virtual void _pushEventSubmitScoreFailed(SubmitScoreFailedEvent submitScoreFailedEvent) {}
+
+			protected virtual void _pushEventShowLeaderboards(ShowLeaderboardsEvent showLeaderboardsEvent) {}
 		}
 	}
 }

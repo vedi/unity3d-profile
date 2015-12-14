@@ -50,7 +50,7 @@ namespace Soomla.Profile
 				Provider targetProvider = Provider.fromString(entry.Key);
 				if (entry.Value.HasValue && entry.Value.Value) {
 					if (targetProvider == Provider.GOOGLE) {
-						result += entry.Key + "^" + PlayerSettings.bundleIdentifier + ";";
+						result += entry.Key + "^" + PlayerSettings.bundleIdentifier + "^" + ProfileSettings.GPEnableGS + "^" + ProfileSettings.GPClientId + ";";
 					}
 					else if (targetProvider == Provider.TWITTER) {
 						result += entry.Key + "^" + ProfileSettings.TwitterConsumerKey + ";";

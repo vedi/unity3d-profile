@@ -27,17 +27,31 @@ namespace Soomla.Profile {
 		private const string TAG = "SOOMLA UserProfile";
 
 		public readonly string ID;
-		public Provider Provider;
+		public readonly Provider Provider;
+		public readonly string Name;
+		public readonly string IconURL;
 
 		public Leaderboard(JSONObject jsonLB) {
-			this.ID = jsonLB[JSONConsts.SOOM_ENTITY_ID].str;
+			this.ID = jsonLB[PJSONConsts.UP_IDENTIFIER].str;
 			this.Provider = Provider.fromString(jsonLB[PJSONConsts.UP_PROVIDER].str);
+			if (jsonLB[PJSONConsts.UP_NAME] != null && jsonLB[PJSONConsts.UP_NAME].type == JSONObject.Type.STRING) {
+				this.Name = jsonLB[PJSONConsts.UP_NAME].str;
+			} else {
+				this.Name = "";
+			}
+			if (jsonLB[PJSONConsts.UP_ICON_URL] != null && jsonLB[PJSONConsts.UP_ICON_URL].type == JSONObject.Type.STRING) {
+				this.IconURL = jsonLB[PJSONConsts.UP_ICON_URL].str;
+			} else {
+				this.IconURL = "";
+			}
 		}
 
 		public JSONObject toJSONObject() {
 			JSONObject obj = new JSONObject();
-			obj.AddField(JSONConsts.SOOM_ENTITY_ID, this.ID);
+			obj.AddField(PJSONConsts.UP_IDENTIFIER, this.ID);
 			obj.AddField(PJSONConsts.UP_PROVIDER, this.Provider.ToString());
+			obj.AddField(PJSONConsts.UP_NAME, this.Name);
+			obj.AddField(PJSONConsts.UP_ICON_URL, this.IconURL);
 			return obj;
 		}
 	}

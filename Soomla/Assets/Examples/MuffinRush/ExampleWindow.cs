@@ -34,7 +34,7 @@ public class ExampleWindow : MonoBehaviour {
 	private static bool isVisible = false;
 	private bool isInit = false;
 
-	private Provider targetProvider = Provider.FACEBOOK;
+	private Provider targetProvider = Provider.GOOGLE;
 	private Reward exampleReward = new BadgeReward("example_reward", "Example Social Reward");
 
 
@@ -126,16 +126,20 @@ public class ExampleWindow : MonoBehaviour {
 
 		ProfileEvents.OnGetScoresFinished += (GetScoresFinishedEvent ev) => {
 			foreach (Score score in ev.Scores.PageData) {
-				SoomlaUtils.LogDebug("ExampleWindow", score.Player.ProfileId);
+				Debug.Log(score.Player.ProfileId);
 			}
 		};
 		ProfileEvents.OnGetLeaderboardsFinished += (GetLeaderboardsFinishedEvent ev) => {
-			SoomlaUtils.LogDebug("ExampleWindow", "leaderboard 1: " + ev.Leaderboards.PageData[0].ID);
-			SoomlaProfile.GetScores(Provider.GAME_CENTER, ev.Leaderboards.PageData[0]);
+			Debug.Log("leaderboard 1: " + ev.Leaderboards.PageData[0].ID);
+			SoomlaProfile.GetScores(targetProvider, ev.Leaderboards.PageData[0]);
+		};
+		ProfileEvents.OnGetLeaderboardsFailed += (GetLeaderboardsFailedEvent ev) => {
+			SoomlaUtils.LogDebug("ExampleWindow", "leaderboard error: " + ev.ErrorDescription);
 		};
 		ProfileEvents.OnLoginFinished += (UserProfile UserProfile, bool autoLogin, string payload) => {
-			SoomlaUtils.LogDebug("ExampleWindow", "logged in");
-			SoomlaProfile.GetLeaderboards(Provider.GAME_CENTER);
+			Debug.Log("logged in");
+			//SoomlaProfile.ShowLeaderboards(targetProvider);
+			SoomlaProfile.GetLeaderboards(targetProvider);
 		};
 		
 		ProfileEvents.OnGetContactsFinished += (Provider provider, SocialPageData<UserProfile> contactsData, string payload) => {
