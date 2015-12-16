@@ -23,54 +23,42 @@ namespace Soomla.Profile
 	/// This class represents a auth provider (for example, Facebook, Twitter, etc).
 	/// Each auth provider needs to implement the functions in this class.
 	/// </summary>
-	public abstract class AuthProvider
-	{
-		public delegate void LoginSuccess();
-		public delegate void LoginFailed(string message);
-		public delegate void LoginCancelled();
-		public delegate void GetUserProfileSuccess(UserProfile userProfile);
-		public delegate void GetUserProfileFailed(string message);
-		public delegate void LogoutFailed(string message);
-		public delegate void LogoutSuccess();
 
+	public delegate void LoginSuccess();
+	public delegate void LoginFailed(string message);
+	public delegate void LoginCancelled();
+	public delegate void GetUserProfileSuccess(UserProfile userProfile);
+	public delegate void GetUserProfileFailed(string message);
+	public delegate void LogoutFailed(string message);
+	public delegate void LogoutSuccess();
+
+	public interface IAuthProvider : IProvider
+	{
 		/// <summary>
 		/// See docs in <see cref="SoomlaProfile.Logout"/>
 		/// </summary>
-		public abstract void Logout(LogoutSuccess success, LogoutFailed fail);
+		void Logout(LogoutSuccess success, LogoutFailed fail);
 
 		/// <summary>
 		/// See docs in <see cref="SoomlaProfile.Login"/>
 		/// </summary>
-		public abstract void Login(LoginSuccess success, LoginFailed fail, LoginCancelled cancel);
+		void Login(LoginSuccess success, LoginFailed fail, LoginCancelled cancel);
 
 		/// <summary>
 		/// See docs in <see cref="SoomlaProfile.GetUserProfile"/>
 		/// </summary>
-		public abstract void GetUserProfile(GetUserProfileSuccess success, GetUserProfileFailed fail);
+		void GetUserProfile(GetUserProfileSuccess success, GetUserProfileFailed fail);
 
 		/// <summary>
 		/// See docs in <see cref="SoomlaProfile.IsLoggedIn"/>
 		/// </summary>
-		public abstract bool IsLoggedIn();
+		bool IsLoggedIn();
 
 		/// <summary>
 		/// Return value of autoLogin setting of the provider.
 		/// </summary>
 		/// <returns>value of autoLogin
-		public abstract bool IsAutoLogin();
-
-
-		/// <summary>
-		/// The place, where you can configure the provider, using params passed by user.
-		/// It's relevant for non-native providers only.
-		/// </summary>
-		/// <param name="providerParams">Params of this provider, passed during Profile initialization.</param>
-		public virtual void Configure(Dictionary<string, string> providerParams) {}
-
-		// TODO: irrelevant for now. Will be updated soon.
-		//		public abstract void GetFeed(FeedSuccess success, FeedFailed fail);
-
-		public abstract bool IsNativelyImplemented();
+		bool IsAutoLogin();
 	}
 }
 

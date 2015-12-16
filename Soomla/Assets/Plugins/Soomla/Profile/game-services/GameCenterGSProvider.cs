@@ -18,7 +18,7 @@ using System.Collections.Generic;
 namespace Soomla.Profile
 {
 #if UNITY_IOS || UNITY_EDITOR
-	public class GameCenterGSProvider : GameServicesProvider
+	public class GameCenterGSProvider : IAuthProvider, IGameServicesProvider
 	{
 		
 		public GameCenterGSProvider () {
@@ -28,47 +28,44 @@ namespace Soomla.Profile
 		/// <summary>
 		/// See docs in <see cref="SoomlaProfile.Logout"/>
 		/// </summary>
-		public override void Logout(LogoutSuccess success, LogoutFailed fail) {}
+		public void Logout(LogoutSuccess success, LogoutFailed fail) {}
 
 		/// <summary>
 		/// See docs in <see cref="SoomlaProfile.Login"/>
 		/// </summary>
-		public override void Login(LoginSuccess success, LoginFailed fail, LoginCancelled cancel) {}
+		public void Login(LoginSuccess success, LoginFailed fail, LoginCancelled cancel) {}
 
 		/// <summary>
 		/// See docs in <see cref="SoomlaProfile.GetUserProfile"/>
 		/// </summary>
-		public override void GetUserProfile(GetUserProfileSuccess success, GetUserProfileFailed fail) {}
+		public void GetUserProfile(GetUserProfileSuccess success, GetUserProfileFailed fail) {}
 
 		/// <summary>
 		/// See docs in <see cref="SoomlaProfile.IsLoggedIn"/>
 		/// </summary>
-		public override bool IsLoggedIn() {return false;}
+		public bool IsLoggedIn() {return false;}
 
 		/// <summary>
-		/// See docs in <see cref="SocialProvider.IsAutoLogin"/>
+		/// See docs in <see cref="ISocialProvider.IsAutoLogin"/>
 		/// </summary>
 		/// <returns>value of autoLogin
-		public override bool IsAutoLogin() {
+		public bool IsAutoLogin() {
 			return false;
 		}
 
-		/// <summary>
-		/// See docs in <see cref="SoomlaProfile.GetContacts"/>
-		/// </summary>
-		public override void GetContacts(bool fromStart, SocialPageDataSuccess<UserProfile> success, FailureHandler fail) {}
+		public void GetLeaderboards(SocialPageDataSuccess<Leaderboard> success, FailureHandler fail) {}
 
-		public override void GetLeaderboards(SocialPageDataSuccess<Leaderboard> success, FailureHandler fail) {}
+		public void GetScores(Leaderboard owner, bool fromStart, SocialPageDataSuccess<Score> success, FailureHandler fail) {}
 
-		public override void GetScores(Leaderboard owner, bool fromStart, SocialPageDataSuccess<Score> success, FailureHandler fail) {}
+		public void SubmitScore(Leaderboard targetLeaderboard, int value, SingleObjectSuccess<Score> success, FailureHandler fail) {}
 
-		public override void ReportScore(Leaderboard owner, int value, SingleObjectSuccess<Score> success, FailureHandler fail) {}
+		public void ShowLeaderboards() {}
 
-		public override bool IsNativelyImplemented() {
-				return true;
+		public void Configure(Dictionary<string, string> providerParams) { }
+
+		public bool IsNativelyImplemented() {
+			return true;
 		}
 	}
 #endif
 }
-
-

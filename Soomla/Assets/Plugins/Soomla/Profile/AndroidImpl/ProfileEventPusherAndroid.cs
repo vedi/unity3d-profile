@@ -221,6 +221,116 @@ namespace Soomla.Profile {
 			}
 			AndroidJNI.PopLocalFrame(IntPtr.Zero);
 		}
+
+		protected override void _pushEventGetLeaderboardsStarted(GetLeaderboardsStartedEvent ev) {
+			if (SoomlaProfile.IsProviderNativelyImplemented(ev.Provider)) return;
+			AndroidJNI.PushLocalFrame(100);
+			using(AndroidJavaClass jniSoomlaProfile = new AndroidJavaClass("com.soomla.profile.unity.ProfileEventHandler")) {
+				ProfileJNIHandler.CallStaticVoid(jniSoomlaProfile, "pushEventGetLeaderboardsStarted",
+						ev.Provider.ToString(), ev.Provider);
+			}
+			AndroidJNI.PopLocalFrame(IntPtr.Zero);
+		}
+
+		protected override void _pushEventGetLeaderboardsFinished(GetLeaderboardsFinishedEvent ev) {
+			if (SoomlaProfile.IsProviderNativelyImplemented(ev.Provider)) return;
+			List<JSONObject> leaderboardList = new List<JSONObject>();
+			foreach (var lb in ev.Leaderboards.PageData) {
+				leaderboardList.Add(lb.toJSONObject());
+			}
+			JSONObject jsonLbs = new JSONObject(leaderboardList.ToArray());
+			AndroidJNI.PushLocalFrame(100);
+			using(AndroidJavaClass jniSoomlaProfile = new AndroidJavaClass("com.soomla.profile.unity.ProfileEventHandler")) {
+				ProfileJNIHandler.CallStaticVoid(jniSoomlaProfile, "pushEventGetLeaderboardsFinished",
+						ev.Provider.ToString(), jsonLbs.ToString(), ev.Payload);
+			}
+			AndroidJNI.PopLocalFrame(IntPtr.Zero);
+		}
+
+		protected override void _pushEventGetLeaderboardsFailed(GetLeaderboardsFailedEvent ev) {
+			if (SoomlaProfile.IsProviderNativelyImplemented(ev.Provider)) return;
+			AndroidJNI.PushLocalFrame(100);
+			using(AndroidJavaClass jniSoomlaProfile = new AndroidJavaClass("com.soomla.profile.unity.ProfileEventHandler")) {
+				ProfileJNIHandler.CallStaticVoid(jniSoomlaProfile, "pushEventGetLeaderboardsFailed",
+						ev.Provider.ToString(), ev.ErrorDescription, ev.Payload);
+			}
+			AndroidJNI.PopLocalFrame(IntPtr.Zero);
+		}
+
+		protected override void _pushEventGetScoresStarted(GetScoresStartedEvent ev) {
+			if (SoomlaProfile.IsProviderNativelyImplemented(ev.Provider)) return;
+			AndroidJNI.PushLocalFrame(100);
+			using(AndroidJavaClass jniSoomlaProfile = new AndroidJavaClass("com.soomla.profile.unity.ProfileEventHandler")) {
+				ProfileJNIHandler.CallStaticVoid(jniSoomlaProfile, "pushEventGetScoresStarted",
+						ev.Provider.ToString(), ev.From.toJSONObject().ToString(), ev.FromStart, ev.Payload);
+			}
+			AndroidJNI.PopLocalFrame(IntPtr.Zero);
+		}
+
+		protected override void _pushEventGetScoresFinished(GetScoresFinishedEvent ev) {
+			if (SoomlaProfile.IsProviderNativelyImplemented(ev.Provider)) return;
+			List<JSONObject> scoreList = new List<JSONObject>();
+			foreach (var sc in ev.Scores.PageData) {
+				scoreList.Add(sc.toJSONObject());
+			}
+			JSONObject jsonSc = new JSONObject(scoreList.ToArray());
+			AndroidJNI.PushLocalFrame(100);
+			using(AndroidJavaClass jniSoomlaProfile = new AndroidJavaClass("com.soomla.profile.unity.ProfileEventHandler")) {
+				ProfileJNIHandler.CallStaticVoid(jniSoomlaProfile, "pushEventGetScoresFinished",
+						ev.Provider.ToString(), ev.From.toJSONObject().ToString(), jsonSc.ToString(), ev.Scores.HasMore, ev.Payload);
+			}
+			AndroidJNI.PopLocalFrame(IntPtr.Zero);
+		}
+
+		protected override void _pushEventGetScoresFailed(GetScoresFailedEvent ev) {
+			if (SoomlaProfile.IsProviderNativelyImplemented(ev.Provider)) return;
+			AndroidJNI.PushLocalFrame(100);
+			using(AndroidJavaClass jniSoomlaProfile = new AndroidJavaClass("com.soomla.profile.unity.ProfileEventHandler")) {
+				ProfileJNIHandler.CallStaticVoid(jniSoomlaProfile, "pushEventGetScoresFailed",
+						ev.Provider.ToString(), ev.From.toJSONObject().ToString(), ev.ErrorDescription, ev.FromStart, ev.Payload);
+			}
+			AndroidJNI.PopLocalFrame(IntPtr.Zero);
+		}
+
+		protected override void _pushEventSubmitScoreStarted(SubmitScoreStartedEvent ev) {
+			if (SoomlaProfile.IsProviderNativelyImplemented(ev.Provider)) return;
+			AndroidJNI.PushLocalFrame(100);
+			using(AndroidJavaClass jniSoomlaProfile = new AndroidJavaClass("com.soomla.profile.unity.ProfileEventHandler")) {
+				ProfileJNIHandler.CallStaticVoid(jniSoomlaProfile, "pushEventSubmitScoreStarted",
+						ev.Provider.ToString(), ev.Destination.toJSONObject().ToString(), ev.Payload);
+			}
+			AndroidJNI.PopLocalFrame(IntPtr.Zero);
+		}
+
+		protected override void _pushEventSubmitScoreFinished(SubmitScoreFinishedEvent ev) {
+			if (SoomlaProfile.IsProviderNativelyImplemented(ev.Provider)) return;
+			AndroidJNI.PushLocalFrame(100);
+			using(AndroidJavaClass jniSoomlaProfile = new AndroidJavaClass("com.soomla.profile.unity.ProfileEventHandler")) {
+				ProfileJNIHandler.CallStaticVoid(jniSoomlaProfile, "pushEventSubmitScoreFinished",
+						ev.Provider.ToString(), ev.Destination.toJSONObject().ToString(), ev.Score.toJSONObject().ToString(), ev.Payload);
+			}
+			AndroidJNI.PopLocalFrame(IntPtr.Zero);
+		}
+
+		protected override void _pushEventSubmitScoreFailed(SubmitScoreFailedEvent ev) {
+			if (SoomlaProfile.IsProviderNativelyImplemented(ev.Provider)) return;
+			AndroidJNI.PushLocalFrame(100);
+			using(AndroidJavaClass jniSoomlaProfile = new AndroidJavaClass("com.soomla.profile.unity.ProfileEventHandler")) {
+				ProfileJNIHandler.CallStaticVoid(jniSoomlaProfile, "pushEventSubmitScoreFailed",
+						ev.Provider.ToString(), ev.Destination.toJSONObject().ToString(), ev.ErrorDescription, ev.Payload);
+			}
+			AndroidJNI.PopLocalFrame(IntPtr.Zero);
+		}
+
+		protected override void _pushEventShowLeaderboards(ShowLeaderboardsEvent ev) {
+			if (SoomlaProfile.IsProviderNativelyImplemented(ev.Provider)) return;
+			AndroidJNI.PushLocalFrame(100);
+			using(AndroidJavaClass jniSoomlaProfile = new AndroidJavaClass("com.soomla.profile.unity.ProfileEventHandler")) {
+				ProfileJNIHandler.CallStaticVoid(jniSoomlaProfile, "pushEventShowLeaderboards",
+						ev.Provider.ToString(), ev.Payload);
+			}
+			AndroidJNI.PopLocalFrame(IntPtr.Zero);
+		}
 #endif
 	}
 }
