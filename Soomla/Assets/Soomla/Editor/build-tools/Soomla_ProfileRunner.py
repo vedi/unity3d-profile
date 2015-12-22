@@ -33,6 +33,7 @@ google_frameworks = [
                     ]
 
 google_gpgs_frameworks = [
+                     'System/Library/Frameworks/CoreData.framework',
                      'System/Library/Frameworks/CoreTelephony.framework',
                      'System/Library/Frameworks/QuartzCore.framework',
                      'System/Library/Frameworks/Security.framework',
