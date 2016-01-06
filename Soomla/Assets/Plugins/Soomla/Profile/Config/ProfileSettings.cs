@@ -24,7 +24,7 @@ using UnityEditor;
 
 namespace Soomla.Profile
 {
-	
+
 	#if UNITY_EDITOR
 	[InitializeOnLoad]
 	#endif
@@ -57,7 +57,10 @@ namespace Soomla.Profile
 			additionalDependFiles.Add("Assets/Plugins/iOS/Soomla/libSoomlaiOSProfileGameCenter.a");
 			SoomlaEditorScript.addFileList("Profile", "Assets/Soomla/profile_file_list", additionalDependFiles.ToArray());
 		}
-		
+
+		private static string googlePlusDependencySource = "http://library.soom.la/fetch/unity3d-levelup/latest";
+		private static string googlePlusSDKPackagePath = "Assets/WebPlayerTemplates/SoomlaConfig/ios/ios-profile-google/sdk/GooglePlusSDK.unitypackage";
+
 		private BuildTargetGroup[] supportedPlatforms =
 		{
 			BuildTargetGroup.Android,
@@ -170,7 +173,7 @@ namespace Soomla.Profile
 		public void OnAndroidGUI() {
 			
 		}
-		
+
 		public void OnIOSGUI(){
 			EditorGUILayout.HelpBox("Profile Settings", MessageType.None);
 			
@@ -363,6 +366,25 @@ namespace Soomla.Profile
 				EditorGUILayout.BeginHorizontal();
 				EditorGUILayout.LabelField(SoomlaEditorScript.EmptyContent, SoomlaEditorScript.SpaceWidth, SoomlaEditorScript.FieldHeight);
 				GPEnableGS = EditorGUILayout.Toggle(enableGPGS, GPEnableGS);
+				EditorGUILayout.EndHorizontal();
+
+				EditorGUILayout.BeginHorizontal();
+				EditorGUILayout.LabelField("Google Play iOS:", SoomlaEditorScript.FieldWidth, SoomlaEditorScript.FieldHeight);
+				string buttonLabel = null;
+				if ((new System.IO.FileInfo(googlePlusSDKPackagePath)).Exists) {
+					GUI.enabled = false;
+					buttonLabel = "Downloaded";
+				} else {
+					GUI.enabled = true;
+					buttonLabel = "Download";
+				}
+				if (GUILayout.Button(buttonLabel)) {
+					if (GUI.enabled) {
+						new System.Net.WebClient().DownloadFile(new Uri(googlePlusDependencySource), googlePlusSDKPackagePath);
+						AssetDatabase.ImportPackage(googlePlusSDKPackagePath, false);
+					}
+				}
+				GUI.enabled = true;
 				EditorGUILayout.EndHorizontal();
 
 				EditorGUI.EndDisabledGroup();
