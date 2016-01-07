@@ -58,7 +58,7 @@ namespace Soomla.Profile
 			SoomlaEditorScript.addFileList("Profile", "Assets/Soomla/profile_file_list", additionalDependFiles.ToArray());
 		}
 
-		private static string googlePlusDependencySource = "http://library.soom.la/fetch/unity3d-levelup/latest";
+		private static string googlePlusDependencySource = "https://s3.amazonaws.com/soomla-library/direct/unity3d-profile-google-plus.unitypackage";
 		private static string googlePlusSDKPackagePath = "Assets/WebPlayerTemplates/SoomlaConfig/ios/ios-profile-google/sdk/GooglePlusSDK.unitypackage";
 
 		private BuildTargetGroup[] supportedPlatforms =
