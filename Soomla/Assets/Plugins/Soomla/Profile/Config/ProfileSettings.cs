@@ -380,6 +380,10 @@ namespace Soomla.Profile
 				}
 				if (GUILayout.Button(buttonLabel)) {
 					if (GUI.enabled) {
+						var googlePlusDirectoryPath = googlePlusSDKPackagePath.Substring(0, googlePlusSDKPackagePath.LastIndexOf("/"));
+						if (!System.IO.Directory.Exists(googlePlusDirectoryPath)) {
+							System.IO.Directory.CreateDirectory(googlePlusDirectoryPath);
+						}
 						new System.Net.WebClient().DownloadFile(new Uri(googlePlusDependencySource), googlePlusSDKPackagePath);
 						AssetDatabase.ImportPackage(googlePlusSDKPackagePath, false);
 					}
